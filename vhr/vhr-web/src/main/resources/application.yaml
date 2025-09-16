@@ -1,0 +1,5 @@
+spring:
+  datasource:
+    username: root
+    password: pika
+    url: jdbc:mysql://localhost:3306/vhr2024?serverTimezone=Asia/Shanghai
