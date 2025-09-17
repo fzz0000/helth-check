@@ -1,12 +1,12 @@
 <template>
     <div>
-        员工调动
+        服务中心
     </div>
 </template>
 
 <script>
     export default {
-        name: "PerMv"
+        name: "SalTable"
     }
 </script>
 
