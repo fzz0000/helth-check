@@ -2,4 +2,4 @@ spring:
   datasource:
     username: root
     password: pika
-    url: jdbc:mysql://localhost:3306/vhr2024?serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://localhost:3306/vhr2025?serverTimezone=Asia/Shanghai

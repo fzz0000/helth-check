@@ -63,7 +63,7 @@ public class Notice implements Serializable {
 
     @Override
     public String toString() {
-        return "Position{" +
+        return "Notice{" +
             "id = " + id +
             ", name = " + name +
             ", createDate = " + createDate +
