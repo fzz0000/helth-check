@@ -31,7 +31,7 @@ export function updateNotice(data) {
 
 export function addNotice(data) {
   return request({
-    url: "/api/system/basic/position",
+    url: "/api/system/basic/notice",
     method: "post",
     data: data,
   });

@@ -1,12 +1,5 @@
 package org.javaboy.vhr.framework.entity;
 
-/**
- * @author：江南一点雨
- * @site：http://www.javaboy.org
- * @微信公众号：江南一点雨
- * @github：https://github.com/lenve
- * @gitee：https://gitee.com/lenve
- */
 public class RespBean {
     private Integer status;
     private String message;
@@ -15,6 +8,7 @@ public class RespBean {
     public static RespBean ok(String message, Object data) {
         return new RespBean(200, message, data);
     }
+
     public static RespBean ok(String message) {
         return new RespBean(200, message, null);
     }
@@ -22,6 +16,7 @@ public class RespBean {
     public static RespBean error(String message, Object data) {
         return new RespBean(500, message, data);
     }
+
     public static RespBean error(String message) {
         return new RespBean(500, message, null);
     }

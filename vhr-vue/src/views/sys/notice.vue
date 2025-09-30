@@ -5,7 +5,7 @@
         @keydown.enter.native="handleAdd"
         v-model="addNo.name"
         style="width: 300px"
-        placeholder="请输入职位名称"
+        placeholder="请输入通知内容"
         :prefix-icon="Plus"
       />
       <el-button type="primary" @click="handleAdd">
@@ -18,7 +18,7 @@
     <div style="margin-top: 10px">
       <el-table :data="notices" border stripe style="width: 100%">
         <el-table-column prop="id" label="编号" width="180" />
-        <el-table-column prop="name" label="职位名称" width="180" />
+        <el-table-column prop="name" label="通知名称" width="180" />
         <el-table-column prop="createDate" label="创建日期" />
         <el-table-column label="是否启用">
           <template #default="scope">
@@ -38,7 +38,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <div style="display: flex;justify-content: flex-end">
+      <div style="display: flex;justify-content: flex-end;margin-top: 10px">
         <el-pagination
           background
           @change="paginationChange"
@@ -48,11 +48,11 @@
         />
       </div>
     </div>
-    <el-dialog v-model="dialogVisible" title="编辑职位" width="30%">
+    <el-dialog v-model="dialogVisible" title="编辑通知" width="30%">
       <div>
         <table>
           <tr>
-            <td>职位名称：</td>
+            <td>通知名称：</td>
             <td>
               <el-input v-model="updateNo.name" placeholder="Please input" />
             </td>
@@ -101,15 +101,9 @@ const data = reactive({
   updateNo: undefined,
   addNo: { name: "" }
 });
-const {
-  notices,
-  total,
-  page,
-  size,
-  updateNo,
-  dialogVisible,
-  addNo
-} = toRefs(data);
+const { notices, total, page, size, updateNo, dialogVisible, addNo } = toRefs(
+  data
+);
 
 function handleAdd() {
   addNotice(addNo.value).then(res => {
@@ -119,7 +113,7 @@ function handleAdd() {
 }
 
 function handleEdit(index, data) {
-  getPositionById(data.id).then(res => {
+  getNoticeById(data.id).then(res => {
     dialogVisible.value = true;
     updateNo.value = res.data;
   });
@@ -157,7 +151,7 @@ function handleDelete(index, row) {
     }
   )
     .then(() => {
-      deletePositionById(row.id).then(res => {
+      deleteNoticeById(row.id).then(res => {
         noticeList();
       });
     })
