@@ -8,6 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,6 +35,16 @@ public class Hr implements Serializable, UserDetails {
      * 姓名
      */
     private String name;
+    
+    /**
+     * 性别
+     */
+    private String gender;
+    
+    /**
+     * 年龄
+     */
+    private Integer age;
 
     /**
      * 手机号码
@@ -50,7 +61,10 @@ public class Hr implements Serializable, UserDetails {
      */
     private String address;
 
-    private Boolean enabled;
+    /**
+     * 用户是否启用
+     */
+    private Boolean enabled = true;
 
     /**
      * 用户名
@@ -70,7 +84,7 @@ public class Hr implements Serializable, UserDetails {
      * 因为我们使用了 MyBatisPLus，那么这里的 hr 就会和数据表中的 hr 表一一对应起来，当然 roles 字段也会对应，但是实际上数据表中并没有该字段，所以这里添加注解表示表中无该字段
      */
     @TableField(exist = false)
-    private List<Role> roles;
+    private List<Role> roles = new ArrayList<>();
 
     public List<Role> getRoles() {
         return roles;
@@ -94,6 +108,22 @@ public class Hr implements Serializable, UserDetails {
 
     public void setName(String name) {
         this.name = name;
+    }
+    
+    public String getGender() {
+        return gender;
+    }
+    
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+    
+    public Integer getAge() {
+        return age;
+    }
+    
+    public void setAge(Integer age) {
+        this.age = age;
     }
 
     public String getPhone() {
@@ -194,6 +224,8 @@ public class Hr implements Serializable, UserDetails {
         return "Hr{" +
             "id = " + id +
             ", name = " + name +
+            ", gender = " + gender +
+            ", age = " + age +
             ", phone = " + phone +
             ", telephone = " + telephone +
             ", address = " + address +

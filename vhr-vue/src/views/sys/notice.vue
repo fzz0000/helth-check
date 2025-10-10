@@ -1,40 +1,37 @@
 <template>
   <div>
-    <div>
-      <el-input
-        @keydown.enter.native="handleAdd"
-        v-model="addNo.name"
-        style="width: 300px"
-        placeholder="请输入通知内容"
-        :prefix-icon="Plus"
-      />
-      <el-button type="primary" @click="handleAdd">
-        添加
-        <el-icon class="el-icon--right">
-          <Plus />
-        </el-icon>
-      </el-button>
-    </div>
     <div style="margin-top: 10px">
       <el-table :data="notices" border stripe style="width: 100%">
-        <el-table-column prop="id" label="编号" width="180" />
-        <el-table-column prop="name" label="通知名称" width="180" />
-        <el-table-column prop="createDate" label="创建日期" />
-        <el-table-column label="是否启用">
+        <el-table-column prop="content" label="通知人" width="180">
           <template #default="scope">
-            <el-switch
-              @change="handleUpdate(scope.row)"
-              v-model="scope.row.enabled"
-              inline-prompt
-              active-text="是"
-              inactive-text="否"
-            />
+            {{
+            scope.row.hr.name
+            }}
           </template>
         </el-table-column>
-        <el-table-column label="操作">
+        <el-table-column prop="content" label="手机号" width="180">
           <template #default="scope">
-            <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-            <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            {{
+            scope.row.hr.phone
+            }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="content" label="通知内容" width="180" />
+        <el-table-column prop="createDate" label="通知时间" />
+        <el-table-column label="状态" width="120">
+          <template #default="scope">
+            {{
+            scope.row.status == 0 ? '待处理' : '已处理'
+            }}
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" v-if="isAdmin">
+          <template #default="scope">
+            <el-button
+              v-if="scope.row.status == 0"
+              size="small"
+              @click="handleUpdate({ status: 1,id: scope.row.id })"
+            >受理</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -48,81 +45,42 @@
         />
       </div>
     </div>
-    <el-dialog v-model="dialogVisible" title="编辑通知" width="30%">
-      <div>
-        <table>
-          <tr>
-            <td>通知名称：</td>
-            <td>
-              <el-input v-model="updateNo.name" placeholder="Please input" />
-            </td>
-          </tr>
-          <tr>
-            <td>是否启用：</td>
-            <td>
-              <el-switch
-                v-model="updateNo.enabled"
-                inline-prompt
-                active-text="是"
-                inactive-text="否"
-              />
-            </td>
-          </tr>
-        </table>
-      </div>
-      <template #footer>
-        <span class="dialog-footer">
-          <el-button @click="dialogVisible = false">取消</el-button>
-          <el-button type="primary" @click="handleUpdate(updateNo)">确认</el-button>
-        </span>
-      </template>
-    </el-dialog>
   </div>
 </template>
 
 <script setup>
-import { reactive, toRefs } from "vue";
+import { reactive, toRefs, computed } from "vue";
 import {
   loadAllNotices,
   updateNotice,
-  getNoticeById,
-  addNotice,
-  deleteNoticeById
+  addNotice
 } from "@/api/system/notice.js";
 import { Plus } from "@element-plus/icons-vue";
 import { ElMessage, ElMessageBox } from "element-plus";
+import { userStore } from "@/stores/index.js";
+
+const uStore = userStore();
+
+const isAdmin = computed(() => uStore.isAdmin);
 
 const data = reactive({
   notices: [],
   total: 0,
   page: 1,
   size: 10,
-  dialogVisible: false,
-  updateNo: undefined,
-  addNo: { name: "" }
+  addNo: { content: "" }
 });
-const { notices, total, page, size, updateNo, dialogVisible, addNo } = toRefs(
-  data
-);
+const { notices, total, page, size, addNo } = toRefs(data);
 
 function handleAdd() {
   addNotice(addNo.value).then(res => {
     noticeList();
-    addNo.value.name = "";
-  });
-}
-
-function handleEdit(index, data) {
-  getNoticeById(data.id).then(res => {
-    dialogVisible.value = true;
-    updateNo.value = res.data;
+    addNo.value.content = "";
   });
 }
 
 function handleUpdate(row) {
   updateNotice(row).then(res => {
-    dialogVisible.value = false;
-    //更新完毕，刷新
     noticeList();
   });
 }
@@ -138,29 +96,6 @@ function noticeList() {
     notices.value = res.data;
     total.value = res.total;
   });
-}
-
-function handleDelete(index, row) {
-  ElMessageBox.confirm(
-    "此操作将删除【" + row.name + "】部门，是否继续?",
-    "Warning",
-    {
-      confirmButtonText: "确定",
-      cancelButtonText: "取消",
-      type: "warning"
-    }
-  )
-    .then(() => {
-      deleteNoticeById(row.id).then(res => {
-        noticeList();
-      });
-    })
-    .catch(() => {
-      ElMessage({
-        type: "info",
-        message: "取消删除"
-      });
-    });
 }
 
 noticeList();

@@ -6,23 +6,25 @@
       >
         <div style="font-size: 30px">Home</div>
         <div>
-          <el-dropdown style="cursor:pointer;" @command="menuHandle">
-            <span class="el-dropdown-link" style="display: flex;align-items: center">
-              {{ user.name }}
+          <span class="el-dropdown-link" style="display: flex;align-items: center">
+            {{userInfo && userInfo.name }}
+            <notice-btn v-if="!isAdmin" />
+
+            <el-dropdown style="cursor:pointer;" @command="menuHandle">
               <img
-                :src="user.userface"
-                style="width: 48px;height: 48px;border-radius: 24px"
-                alt
+                :src="userInfo && userInfo.userface"
+                style="width: 48px;height: 48px;border-radius:50%;margin-left:10px;background: #fff"
+                alt="头像"
               />
-            </span>
-            <template #dropdown>
-              <el-dropdown-menu>
-                <el-dropdown-item command="usercenter">个人中心</el-dropdown-item>
-                <el-dropdown-item command="settings">设置</el-dropdown-item>
-                <el-dropdown-item command="logout" divided>注销登录</el-dropdown-item>
-              </el-dropdown-menu>
-            </template>
-          </el-dropdown>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item command="usercenter">个人中心</el-dropdown-item>
+                  <el-dropdown-item command="settings">设置</el-dropdown-item>
+                  <el-dropdown-item command="logout" divided>注销登录</el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
+          </span>
         </div>
       </el-header>
       <el-container>
@@ -69,6 +71,7 @@
 </template>
 <script setup>
 import { ArrowRight } from "@element-plus/icons-vue";
+import noticeBtn from "@/components/notice-btn.vue";
 
 import { RouterView } from "vue-router";
 import {
@@ -78,24 +81,30 @@ import {
   Avatar,
   Setting
 } from "@element-plus/icons-vue";
-import { reactive, toRefs } from "vue";
+import { reactive, toRefs, computed } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { logout } from "@/api/login.js";
 import { getCurrentInstance } from "vue";
 import { loadMenus } from "@/api/menus.js";
 import HomeView from "@/views/HomeView.vue";
-import { menusStore } from "@/stores/index.js";
+import { menusStore, userStore } from "@/stores/index.js";
 
 const mStore = menusStore();
+const uStore = userStore();
+// 初始化用户信息
+uStore.initUser();
 const { proxy } = getCurrentInstance();
-//加载指定路径下的所有 .vue 组件，modules 变量类似于 map，其中 key 就是组件的路径（/src/views/emp/EmpBasic.vue），value 则是组件对象
+// 加载指定路径下的所有 .vue 组件，modules 变量类似于 map，其中 key 就是组件的路径（/src/views/emp/EmpBasic.vue），value 则是组件对象
 const modules = import.meta.glob("@/views/**/*.vue");
 
 const data = reactive({
-  user: JSON.parse(window.sessionStorage.getItem("user")),
   menus: mStore.menus
 });
-const { user, menus } = toRefs(data);
+const { menus } = toRefs(data);
+
+// 从全局 store 获取用户信息和 isAdmin 状态
+const userInfo = computed(() => uStore.userInfo);
+const isAdmin = computed(() => uStore.isAdmin);
 
 // function menuSelect(index, indexPath) {
 //   proxy.$router.push(index);
@@ -148,8 +157,9 @@ function menuHandle(cmd) {
     })
       .then(() => {
         logout().then(res => {
-          //1. 注销成功，两件事
-          window.sessionStorage.removeItem("hr");
+          //1. 注销成功，三件事
+          //调用 userStore 的 clearUser 方法清除用户状态
+          uStore.clearUser();
           //跳转到登录页面
           proxy.$router.replace("/");
           //清空菜单数组
@@ -162,6 +172,5 @@ function menuHandle(cmd) {
   }
 }
 
-console.log("==============");
-loadAllMenus();
+// loadAllMenus();
 </script>
