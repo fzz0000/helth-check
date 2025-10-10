@@ -26,7 +26,10 @@ public class NoticeController {
 
     @GetMapping
     public RespPageBean getNoticesByRole(@RequestParam(defaultValue = "1") Integer page,
-            @RequestParam(defaultValue = "10") Integer size) {
+            @RequestParam(defaultValue = "10") Integer size,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String phone,
+            @RequestParam(required = false) String content) {
         // 获取当前登录用户信息
         Hr hr = (Hr) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -43,10 +46,8 @@ public class NoticeController {
                     .anyMatch(role -> role != null && role.getId() != null && role.getId() == 6);
         }
 
-        // System.out.println("-------------" + isAdmin);
-
-        // 根据角色获取通知列表，并支持分页
-        return noticeService.getNoticesByRole(hr.getId(), isAdmin, page, size);
+        // 根据角色获取通知列表，并支持分页和模糊查询
+        return noticeService.getNoticesByRole(hr.getId(), isAdmin, page, size, name, phone, content);
     }
 
     // 保留原有的分页查询方法，用于其他场景
@@ -59,7 +60,7 @@ public class NoticeController {
 
     @PutMapping
     public RespBean updateNoticeById(@RequestBody Notice notice) {
-        return noticeService.updateById(notice) ? RespBean.ok("更新成功") : RespBean.error("更新失败");
+        return noticeService.updateById(notice) ? RespBean.ok("ok") : RespBean.error("fail");
     }
 
     @PostMapping

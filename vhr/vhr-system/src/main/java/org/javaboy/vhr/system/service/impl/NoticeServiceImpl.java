@@ -75,24 +75,55 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> impleme
     }
 
     @Override
-    public RespPageBean getNoticesByRole(Integer hrId, boolean isAdmin, Integer page, Integer size) {
+    public RespPageBean getNoticesByRole(Integer hrId, boolean isAdmin, Integer page, Integer size, String name,
+            String phone, String content) {
         // 创建分页对象
         Page<Notice> noticePage = new Page<>(page, size);
         QueryWrapper<Notice> queryWrapper = new QueryWrapper<>();
 
         if (isAdmin) {
-            // 管理员角色：获取每个hr_id的最新一条通知，并进行分页
-            String sql = "SELECT n1.id FROM notice n1 " +
-                    "INNER JOIN (" +
-                    "    SELECT hr_id, MAX(create_date) AS max_create_date " +
-                    "    FROM notice " +
-                    "    WHERE hr_id IS NOT NULL " +
-                    "    GROUP BY hr_id " +
-                    ") n2 ON n1.hr_id = n2.hr_id AND n1.create_date = n2.max_create_date";
-            queryWrapper.inSql("id", sql);
+            // 管理员角色：获取每个hr_id的最新一条通知，并进行分页和模糊查询
+            // 构建包含模糊查询条件的SQL
+            StringBuilder sqlBuilder = new StringBuilder();
+            sqlBuilder.append("SELECT n1.id FROM notice n1 ");
+            sqlBuilder.append("INNER JOIN hr ON n1.hr_id = hr.id ");
+            sqlBuilder.append("INNER JOIN ( ");
+            sqlBuilder.append("    SELECT hr_id, MAX(create_date) AS max_create_date ");
+            sqlBuilder.append("    FROM notice ");
+            sqlBuilder.append("    WHERE hr_id IS NOT NULL ");
+            sqlBuilder.append("    GROUP BY hr_id ");
+            sqlBuilder.append(") n2 ON n1.hr_id = n2.hr_id AND n1.create_date = n2.max_create_date ");
+
+            // 添加模糊查询条件
+            boolean hasCondition = false;
+            if (name != null && !name.trim().isEmpty()) {
+                sqlBuilder.append(hasCondition ? " AND " : " WHERE ");
+                sqlBuilder.append("hr.name LIKE CONCAT('%', '").append(name.trim()).append("', '%')");
+                hasCondition = true;
+            }
+            if (phone != null && !phone.trim().isEmpty()) {
+                sqlBuilder.append(hasCondition ? " AND " : " WHERE ");
+                sqlBuilder.append("hr.phone LIKE CONCAT('%', '").append(phone.trim()).append("', '%')");
+                hasCondition = true;
+            }
+            if (content != null && !content.trim().isEmpty()) {
+                sqlBuilder.append(hasCondition ? " AND " : " WHERE ");
+                sqlBuilder.append("n1.content LIKE CONCAT('%', '").append(content.trim()).append("', '%')");
+            }
+
+            // 使用inSql方式查询满足条件的ID
+            queryWrapper.inSql("id", sqlBuilder.toString());
+
+            System.out.println("----------------" + sqlBuilder.toString());
+
         } else {
-            // 普通用户：获取当前用户的所有通知，并进行分页
+            // 普通用户：获取当前用户的所有通知，并进行分页和模糊查询
             queryWrapper.eq("hr_id", hrId);
+
+            // 添加通知内容的模糊查询条件
+            if (content != null && !content.trim().isEmpty()) {
+                queryWrapper.like("content", content);
+            }
         }
 
         // 按创建时间降序排序
