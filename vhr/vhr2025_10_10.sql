@@ -11,7 +11,7 @@
  Target Server Version : 50736
  File Encoding         : 65001
 
- Date: 10/10/2025 17:01:03
+ Date: 11/10/2025 11:46:50
 */
 
 SET NAMES utf8mb4;
@@ -207,7 +207,7 @@ CREATE TABLE `notice`  (
   INDEX `idx_hr_id`(`hr_id`) USING BTREE,
   INDEX `idx_status`(`status`) USING BTREE,
   UNIQUE INDEX `content`(`content`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 83 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 86 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of notice
@@ -223,9 +223,9 @@ INSERT INTO `notice` VALUES (37, '	 通知内容	 通知内容	 通洒点水知�
 INSERT INTO `notice` VALUES (38, '是的撒', '2025-09-30 15:10:51', 1, 10, 0);
 INSERT INTO `notice` VALUES (39, '刚刚发', '2025-09-30 15:10:53', 1, 3, 0);
 INSERT INTO `notice` VALUES (40, '是的是的', '2025-09-30 15:10:59', 1, 5, 0);
-INSERT INTO `notice` VALUES (41, '大发发', '2025-09-30 15:11:03', 0, 10, 1);
+INSERT INTO `notice` VALUES (41, '大发发', '2025-09-30 15:11:03', 0, 10, 0);
 INSERT INTO `notice` VALUES (44, '是多', '2025-10-09 15:36:43', 1, 3, 0);
-INSERT INTO `notice` VALUES (49, '速度是多少', '2025-10-10 15:27:17', 1, 3, 1);
+INSERT INTO `notice` VALUES (49, '速度是多少', '2025-10-10 15:27:17', 1, 3, 0);
 INSERT INTO `notice` VALUES (50, '是多少', '2025-10-10 15:46:07', 1, 3, 0);
 INSERT INTO `notice` VALUES (51, '多少度', '2025-10-10 15:46:10', 1, 3, 0);
 INSERT INTO `notice` VALUES (52, '都是', '2025-10-10 15:46:11', 1, 3, 0);
@@ -233,8 +233,8 @@ INSERT INTO `notice` VALUES (54, ' 都是 ', '2025-10-10 15:46:13', 1, 3, 0);
 INSERT INTO `notice` VALUES (55, '都是的', '2025-10-10 15:46:15', 1, 3, 0);
 INSERT INTO `notice` VALUES (56, '收到撒打算', '2025-10-10 15:46:18', 1, 3, 0);
 INSERT INTO `notice` VALUES (57, '是多少都是', '2025-10-10 15:46:32', 1, 3, 0);
-INSERT INTO `notice` VALUES (58, '阿斯蒂芬', '2025-10-10 15:46:44', 1, 3, 1);
-INSERT INTO `notice` VALUES (59, '大萨达', '2025-10-10 16:00:50', 1, 3, 1);
+INSERT INTO `notice` VALUES (58, '阿斯蒂芬', '2025-10-10 15:46:44', 1, 3, 0);
+INSERT INTO `notice` VALUES (59, '大萨达', '2025-10-10 16:00:50', 1, 3, 0);
 INSERT INTO `notice` VALUES (60, '大大声发', '2025-10-10 16:01:57', 1, 3, 0);
 INSERT INTO `notice` VALUES (61, 'value', '2025-10-10 16:19:15', 1, 3, 0);
 INSERT INTO `notice` VALUES (63, '是多少是多少', '2025-10-10 16:21:16', 1, 3, 0);
@@ -245,7 +245,7 @@ INSERT INTO `notice` VALUES (67, '是多是的撒的啊是多少', '2025-10-10 1
 INSERT INTO `notice` VALUES (68, 'addNotice', '2025-10-10 16:26:07', 1, 3, 0);
 INSERT INTO `notice` VALUES (69, 'addNoticeaddNotice', '2025-10-10 16:26:16', 1, 3, 0);
 INSERT INTO `notice` VALUES (70, 'addNoticeaddNotice--', '2025-10-10 16:26:33', 1, 3, 0);
-INSERT INTO `notice` VALUES (71, ' #dropdown', '2025-10-10 16:29:42', 1, 3, 0);
+INSERT INTO `notice` VALUES (71, ' #dropdown', '2025-10-10 16:29:42', 1, 3, 1);
 INSERT INTO `notice` VALUES (72, 'sd', '2025-10-10 16:38:43', 1, 5, 0);
 INSERT INTO `notice` VALUES (73, '1', '2025-10-10 16:38:46', 1, 5, 0);
 INSERT INTO `notice` VALUES (74, '2', '2025-10-10 16:38:47', 1, 5, 0);
@@ -254,9 +254,12 @@ INSERT INTO `notice` VALUES (76, '4', '2025-10-10 16:38:51', 1, 5, 0);
 INSERT INTO `notice` VALUES (77, '5', '2025-10-10 16:38:54', 1, 5, 0);
 INSERT INTO `notice` VALUES (78, '6', '2025-10-10 16:38:55', 1, 5, 0);
 INSERT INTO `notice` VALUES (79, '7', '2025-10-10 16:39:08', 1, 5, 0);
-INSERT INTO `notice` VALUES (80, 'ss', '2025-10-10 16:46:26', 1, 5, 1);
+INSERT INTO `notice` VALUES (80, 'ss', '2025-10-10 16:46:26', 1, 5, 0);
 INSERT INTO `notice` VALUES (81, 'user推送', '2025-10-10 16:58:52', 1, 5, 0);
 INSERT INTO `notice` VALUES (82, 'user推送00', '2025-10-10 16:59:19', 1, 5, 0);
+INSERT INTO `notice` VALUES (83, 'sss', '2025-10-10 17:49:33', 1, 5, 0);
+INSERT INTO `notice` VALUES (84, 'ssss', '2025-10-10 17:49:48', 1, 5, 0);
+INSERT INTO `notice` VALUES (85, 'sdsadsa', '2025-10-10 17:50:16', 1, 5, 0);
 
 -- ----------------------------
 -- Table structure for role
