@@ -8,7 +8,7 @@
         @keydown.enter.native="handleAdd"
         v-model="content"
         style="width: 300px"
-        placeholder="请输入通知内容"
+        placeholder="请输入求助信息"
       />
       <el-button type="primary" @click="handleAdd">
         添加

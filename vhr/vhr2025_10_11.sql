@@ -11,11 +11,48 @@
  Target Server Version : 50736
  File Encoding         : 65001
 
- Date: 11/10/2025 11:46:50
+ Date: 11/10/2025 18:11:27
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for appointment
+-- ----------------------------
+DROP TABLE IF EXISTS `appointment`;
+CREATE TABLE `appointment`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `content` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '预约内容',
+  `create_date` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `appointment_time` datetime(0) NULL DEFAULT NULL COMMENT '预约时间',
+  `hr_id` int(11) NULL DEFAULT NULL COMMENT '预约人ID',
+  `status` int(11) NULL DEFAULT 0 COMMENT '预约状态(0:待受理,1:已受理)',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_hr_id`(`hr_id`) USING BTREE,
+  INDEX `idx_status`(`status`) USING BTREE,
+  CONSTRAINT `appointment_ibfk_1` FOREIGN KEY (`hr_id`) REFERENCES `hr` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
+) ENGINE = InnoDB AUTO_INCREMENT = 36 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of appointment
+-- ----------------------------
+INSERT INTO `appointment` VALUES (1, '0', '2025-10-11 09:00:00', '2025-10-12 14:00:00', 3, 1);
+INSERT INTO `appointment` VALUES (2, '1', '2025-10-11 09:30:00', '2025-10-13 10:00:00', 10, 1);
+INSERT INTO `appointment` VALUES (3, '2,1', '2025-10-11 10:15:00', '2025-10-14 15:30:00', 5, 1);
+INSERT INTO `appointment` VALUES (10, '0,1,3', '2025-10-11 17:14:30', '2025-10-11 17:14:55', 5, 1);
+INSERT INTO `appointment` VALUES (11, '1,2,3', '2025-10-11 17:16:00', '2025-10-16 02:02:02', 5, 1);
+INSERT INTO `appointment` VALUES (12, '0,1', '2025-10-11 17:17:00', '2025-10-24 00:00:00', 5, 1);
+INSERT INTO `appointment` VALUES (13, '0,1,2', '2025-10-11 17:17:19', '2025-10-31 00:00:00', 5, 1);
+INSERT INTO `appointment` VALUES (14, '1,2,3', '2025-10-11 17:17:24', '2025-10-30 00:00:00', 5, 1);
+INSERT INTO `appointment` VALUES (19, '1', '2025-10-11 17:17:52', '2025-10-11 17:37:21', 5, 1);
+INSERT INTO `appointment` VALUES (29, '2,3', '2025-10-11 17:32:07', '2025-10-11 17:32:06', 5, 1);
+INSERT INTO `appointment` VALUES (30, '2,3', '2025-10-11 17:32:11', '2025-10-11 17:32:10', 5, 1);
+INSERT INTO `appointment` VALUES (31, '0,1,2,3', '2025-10-11 17:32:16', '2025-10-11 17:32:15', 5, 1);
+INSERT INTO `appointment` VALUES (32, '0,1', '2025-10-11 17:36:50', '2025-10-15 00:00:00', 5, 1);
+INSERT INTO `appointment` VALUES (33, '1,0', '2025-10-11 17:43:56', '2025-10-24 00:00:00', 5, 1);
+INSERT INTO `appointment` VALUES (34, '1,2,3', '2025-10-11 18:10:03', '2025-10-14 00:00:00', 5, 0);
+INSERT INTO `appointment` VALUES (35, '1,0', '2025-10-11 18:10:07', '2025-10-11 18:10:06', 5, 1);
 
 -- ----------------------------
 -- Table structure for hr
@@ -95,7 +132,7 @@ INSERT INTO `menu` VALUES (4, '/', '/home', '/src/views/HomeView.vue', '服务�
 INSERT INTO `menu` VALUES (5, '/', '/home', '/src/views/HomeView.vue', '预留菜单', 'fa fa-bar-chart', NULL, 1, 1, 1);
 INSERT INTO `menu` VALUES (6, '/', '/home', '/src/views/HomeView.vue', '系统管理', 'fa fa-windows', NULL, 1, 1, 1);
 INSERT INTO `menu` VALUES (7, '/user/list/**', '/user/list', '/src/views/user/list.vue', '所有用户', NULL, NULL, 1, 2, 1);
-INSERT INTO `menu` VALUES (14, '/service/list/**', '/service/list', '/src/views/service/list.vue', '预约管理', NULL, NULL, 1, 4, 1);
+INSERT INTO `menu` VALUES (14, '/service/appointment/**', '/service/appointment', '/src/views/service/appointment.vue', '预约管理', NULL, NULL, 1, 4, 1);
 INSERT INTO `menu` VALUES (23, '/system/notice/**', '/sys/notice', '/src/views/sys/notice.vue', '通知管理', NULL, NULL, 1, 6, 1);
 
 -- ----------------------------
@@ -207,7 +244,7 @@ CREATE TABLE `notice`  (
   INDEX `idx_hr_id`(`hr_id`) USING BTREE,
   INDEX `idx_status`(`status`) USING BTREE,
   UNIQUE INDEX `content`(`content`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 86 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 87 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of notice
@@ -217,9 +254,9 @@ INSERT INTO `notice` VALUES (30, '通知内容11', '2018-01-11 21:13:48', 0, 5, 
 INSERT INTO `notice` VALUES (31, '通知内容555', '2018-01-11 00:00:00', 1, 10, 0);
 INSERT INTO `notice` VALUES (33, '通知内容55555', '2018-01-14 00:00:00', 0, 3, 0);
 INSERT INTO `notice` VALUES (34, 'notice', '2025-09-30 11:32:13', 0, 5, 0);
-INSERT INTO `notice` VALUES (35, '\t 通知内容\t 通知内容', '2025-09-30 15:10:44', 1, 10, 0);
-INSERT INTO `notice` VALUES (36, '\t 通知内容\t 通知内容\t 通知内容\t 通知内容', '2025-09-30 15:10:46', 1, 3, 0);
-INSERT INTO `notice` VALUES (37, '\t 通知内容\t 通知内容\t 通洒点水知内容\t 通知内容', '2025-09-30 15:10:50', 1, 5, 0);
+INSERT INTO `notice` VALUES (35, '	 通知内容	 通知内容', '2025-09-30 15:10:44', 1, 10, 0);
+INSERT INTO `notice` VALUES (36, '	 通知内容	 通知内容	 通知内容	 通知内容', '2025-09-30 15:10:46', 1, 3, 0);
+INSERT INTO `notice` VALUES (37, '	 通知内容	 通知内容	 通洒点水知内容	 通知内容', '2025-09-30 15:10:50', 1, 5, 0);
 INSERT INTO `notice` VALUES (38, '是的撒', '2025-09-30 15:10:51', 1, 10, 0);
 INSERT INTO `notice` VALUES (39, '刚刚发', '2025-09-30 15:10:53', 1, 3, 0);
 INSERT INTO `notice` VALUES (40, '是的是的', '2025-09-30 15:10:59', 1, 5, 0);
@@ -260,30 +297,7 @@ INSERT INTO `notice` VALUES (82, 'user推送00', '2025-10-10 16:59:19', 1, 5, 0)
 INSERT INTO `notice` VALUES (83, 'sss', '2025-10-10 17:49:33', 1, 5, 0);
 INSERT INTO `notice` VALUES (84, 'ssss', '2025-10-10 17:49:48', 1, 5, 0);
 INSERT INTO `notice` VALUES (85, 'sdsadsa', '2025-10-10 17:50:16', 1, 5, 0);
-
--- ----------------------------
--- Table structure for appointment
--- ----------------------------
-DROP TABLE IF EXISTS `appointment`;
-CREATE TABLE `appointment`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `content` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '预约内容',
-  `create_date` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `appointment_time` datetime(0) NULL DEFAULT NULL COMMENT '预约时间',
-  `hr_id` int(11) NULL DEFAULT NULL COMMENT '预约人ID',
-  `status` int(11) NULL DEFAULT 0 COMMENT '预约状态(0:待受理,1:已受理)',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_hr_id`(`hr_id`) USING BTREE,
-  INDEX `idx_status`(`status`) USING BTREE,
-  CONSTRAINT `appointment_ibfk_1` FOREIGN KEY (`hr_id`) REFERENCES `hr` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of appointment
--- ----------------------------
-INSERT INTO `appointment` VALUES (1, '健康咨询预约', '2025-10-11 09:00:00', '2025-10-12 14:00:00', 5, 0);
-INSERT INTO `appointment` VALUES (2, '常规体检预约', '2025-10-11 09:30:00', '2025-10-13 10:00:00', 10, 1);
-INSERT INTO `appointment` VALUES (3, '心理咨询服务', '2025-10-11 10:15:00', '2025-10-14 15:30:00', 5, 0);
+INSERT INTO `notice` VALUES (86, '489489489', '2025-10-11 16:36:20', 1, 5, 0);
 
 -- ----------------------------
 -- Table structure for role

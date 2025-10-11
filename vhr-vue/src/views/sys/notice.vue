@@ -167,7 +167,10 @@ function noticeList() {
 //   }
 // });
 
-noticeList();
+// 页面挂载时加载列表
+onMounted(() => {
+  noticeList();
+});
 </script>
 
 <style scoped>

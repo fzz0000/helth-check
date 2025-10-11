@@ -9,6 +9,7 @@
           <span class="el-dropdown-link" style="display: flex;align-items: center">
             {{userInfo && userInfo.name }}
             <notice-btn v-if="!isAdmin" />
+            <appointment-btn v-if="!isAdmin" />
 
             <el-dropdown style="cursor:pointer;" @command="menuHandle">
               <img
@@ -55,6 +56,7 @@
           <el-breadcrumb
             :separator-icon="ArrowRight"
             v-if="proxy.$router.currentRoute.value.path!='/home'"
+            style="margin-bottom: 20px"
           >
             <el-breadcrumb-item :to="{ path: '/home' }">主页</el-breadcrumb-item>
             <el-breadcrumb-item>{{ proxy.$router.currentRoute.value.name }}</el-breadcrumb-item>
