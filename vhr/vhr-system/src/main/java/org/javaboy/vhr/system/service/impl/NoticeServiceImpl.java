@@ -114,7 +114,7 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> impleme
             // 使用inSql方式查询满足条件的ID
             queryWrapper.inSql("id", sqlBuilder.toString());
 
-            System.out.println("----------------" + sqlBuilder.toString());
+            // System.out.println("----------------" + sqlBuilder.toString());
 
         } else {
             // 普通用户：获取当前用户的所有通知，并进行分页和模糊查询

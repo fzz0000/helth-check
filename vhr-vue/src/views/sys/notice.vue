@@ -2,7 +2,9 @@
   <div>
     <div style="margin-top: 10px">
       <!-- 搜索表单 -->
-      <div style="margin-bottom: 20px; padding: 10px; background-color: #f5f7fa; border-radius: 4px">
+      <div
+        style="margin-bottom: 20px; padding: 10px; background-color: #f5f7fa; border-radius: 4px"
+      >
         <el-form :inline="true" :model="searchForm" size="small">
           <el-form-item label="通知人">
             <el-input v-model="searchForm.name" placeholder="请输入通知人姓名" style="width: 180px" />
@@ -19,7 +21,7 @@
           </el-form-item>
         </el-form>
       </div>
-      
+
       <el-table :data="notices" border stripe style="width: 100%">
         <el-table-column prop="content" label="通知人" width="180">
           <template #default="scope">
@@ -40,7 +42,7 @@
         <el-table-column label="状态" width="120">
           <template #default="scope">
             {{
-            scope.row.status == 0 ? '待处理' : '已处理'
+            scope.row.status == 0 ? '待受理' : '已受理'
             }}
           </template>
         </el-table-column>
@@ -89,9 +91,9 @@ const data = reactive({
   size: 10,
   addNo: { content: "" },
   searchForm: {
-    name: '',
-    phone: '',
-    content: ''
+    name: "",
+    phone: "",
+    content: ""
   }
 });
 const { notices, total, page, size, addNo, searchForm } = toRefs(data);
@@ -105,6 +107,7 @@ function handleAdd() {
 
 function handleUpdate(row) {
   updateNotice(row).then(res => {
+    ElMessage.success("受理成功");
     noticeList();
   });
 }
@@ -123,9 +126,9 @@ function handleSearch() {
 
 // 重置搜索表单
 function handleReset() {
-  searchForm.value.name = '';
-  searchForm.value.phone = '';
-  searchForm.value.content = '';
+  searchForm.value.name = "";
+  searchForm.value.phone = "";
+  searchForm.value.content = "";
   page.value = 1;
   noticeList();
 }
