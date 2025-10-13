@@ -13,11 +13,11 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.javaboy.vhr.framework.entity.Hr;
 import org.javaboy.vhr.framework.service.IHrService;
+import org.javaboy.vhr.framework.service.SocketIOService;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.javaboy.vhr.framework.entity.Hr;
 
 /**
  * <p>
@@ -32,6 +32,9 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> impleme
 
     @Autowired
     private IHrService hrService;
+
+    @Autowired
+    private SocketIOService socketIOService;
 
     @Override
     public RespPageBean getNoticesByPage(Integer page, Integer size) {
@@ -58,7 +61,17 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> impleme
             Hr currentUser = (Hr) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             notice.setHrId(currentUser.getId());
 
-            return save(notice) ? RespBean.ok("添加成功") : RespBean.error("添加失败");
+            boolean saveResult = save(notice);
+
+            if (saveResult) {
+                // 推送Socket.IO消息
+                String pushUser = currentUser.getName();
+                String pushPhone = currentUser.getPhone();
+                socketIOService.pushNoticeMessage(notice.getContent(), pushUser, pushPhone);
+                return RespBean.ok("添加成功");
+            } else {
+                return RespBean.error("添加失败");
+            }
         } else {
             return RespBean.error("通知内容重复，添加失败");
         }

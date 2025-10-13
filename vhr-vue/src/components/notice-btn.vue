@@ -37,7 +37,7 @@ const { content } = toRefs(data);
 
 function handleAdd() {
   addNotice({ content: content.value }).then(res => {
-    ElMessage.success("添加成功");
+    ElMessage.success("求助信息已发出");
     content.value = "";
   });
 }

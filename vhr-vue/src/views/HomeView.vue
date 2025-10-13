@@ -7,10 +7,8 @@
         <div style="font-size: 30px">Home</div>
         <div>
           <span class="el-dropdown-link" style="display: flex;align-items: center">
-            {{userInfo && userInfo.name }}
             <notice-btn v-if="!isAdmin" />
-            <appointment-btn v-if="!isAdmin" />
-
+            {{userInfo && userInfo.name }}
             <el-dropdown style="cursor:pointer;" @command="menuHandle">
               <img
                 :src="userInfo && userInfo.userface"
@@ -83,19 +81,22 @@ import {
   Avatar,
   Setting
 } from "@element-plus/icons-vue";
-import { reactive, toRefs, computed } from "vue";
+import { ref, reactive, toRefs, computed, h } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { logout } from "@/api/login.js";
 import { getCurrentInstance } from "vue";
 import { loadMenus } from "@/api/menus.js";
 import HomeView from "@/views/HomeView.vue";
 import { menusStore, userStore } from "@/stores/index.js";
+import { SocketIoComponent } from "@/utils/socket.io.js";
 
 const mStore = menusStore();
 const uStore = userStore();
 // 初始化用户信息
 uStore.initUser();
 const { proxy } = getCurrentInstance();
+// 头像引用
+const avatarRef = ref(null);
 // 加载指定路径下的所有 .vue 组件，modules 变量类似于 map，其中 key 就是组件的路径（/src/views/emp/EmpBasic.vue），value 则是组件对象
 const modules = import.meta.glob("@/views/**/*.vue");
 
@@ -175,4 +176,42 @@ function menuHandle(cmd) {
 }
 
 // loadAllMenus();
+
+// 注册 Socket.IO 组件
+SocketIoComponent.setup({
+  onNotice(msgData) {
+    // 仅管理端接收一键求助按钮通知推送
+    if (isAdmin.value) {
+      const helpName = msgData.pushUser || "未知用户";
+      // 创建通知消息
+      ElMessage({
+        message: h("div", [
+          h(
+            "span",
+            {
+              style: {
+                color: "red"
+              }
+            },
+            ["收到一条新的求助信息："]
+          ),
+          `求助人-${helpName}，`,
+          h(
+            "button",
+            {
+              class: "el-button el-button--primary",
+              onClick: () => {
+                proxy.$router.push("/sys/notice");
+              }
+            },
+            "查看明细"
+          )
+        ]),
+        type: "warning",
+        duration: 5000,
+        showClose: true
+      });
+    }
+  }
+});
 </script>

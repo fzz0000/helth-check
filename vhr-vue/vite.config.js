@@ -13,11 +13,12 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
-      // Proxying websockets or socket.io: ws://localhost:5173/socket.io -> ws://localhost:5174/socket.io
-      "/socket.io": {
-        target: "ws://localhost:5174",
-        ws: true,
-      },
+      // Proxying websockets or socket.io: ws://localhost:5173/socket.io -> ws://localhost:8080/socket.io
+    "/socket.io": {
+      target: "http://localhost:8081",
+      ws: true,
+      changeOrigin: true
+    },
     },
     host: "0.0.0.0",
     // port: 3024,

@@ -3,3 +3,8 @@ spring:
     username: root
     password: pika
     url: jdbc:mysql://localhost:3306/vhr2025?serverTimezone=Asia/Shanghai
+
+# Socket.IO 配置
+socketio:
+  host: localhost
+  port: 8081
