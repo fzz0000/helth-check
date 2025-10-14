@@ -11,11 +11,48 @@
  Target Server Version : 50736
  File Encoding         : 65001
 
- Date: 11/10/2025 11:46:50
+ Date: 14/10/2025 16:09:25
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for appointment
+-- ----------------------------
+DROP TABLE IF EXISTS `appointment`;
+CREATE TABLE `appointment`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `content` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '预约内容',
+  `create_date` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `appointment_time` datetime(0) NULL DEFAULT NULL COMMENT '预约时间',
+  `hr_id` int(11) NULL DEFAULT NULL COMMENT '预约人ID',
+  `status` int(11) NULL DEFAULT 0 COMMENT '预约状态(0:待受理,1:已受理)',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_hr_id`(`hr_id`) USING BTREE,
+  INDEX `idx_status`(`status`) USING BTREE,
+  CONSTRAINT `appointment_ibfk_1` FOREIGN KEY (`hr_id`) REFERENCES `hr` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
+) ENGINE = InnoDB AUTO_INCREMENT = 36 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of appointment
+-- ----------------------------
+INSERT INTO `appointment` VALUES (1, '0', '2025-10-11 09:00:00', '2025-10-12 14:00:00', 3, 0);
+INSERT INTO `appointment` VALUES (2, '1', '2025-10-11 09:30:00', '2025-10-13 10:00:00', 10, 0);
+INSERT INTO `appointment` VALUES (3, '2,1', '2025-10-11 10:15:00', '2025-10-14 15:30:00', 5, 0);
+INSERT INTO `appointment` VALUES (10, '0,1,3', '2025-10-11 17:14:30', '2025-10-11 17:14:55', 5, 0);
+INSERT INTO `appointment` VALUES (11, '1,2,3', '2025-10-11 17:16:00', '2025-10-16 02:02:02', 3, 0);
+INSERT INTO `appointment` VALUES (12, '0,1', '2025-10-11 17:17:00', '2025-10-24 00:00:00', 10, 0);
+INSERT INTO `appointment` VALUES (13, '0,1,2', '2025-10-11 17:17:19', '2025-10-31 00:00:00', 5, 0);
+INSERT INTO `appointment` VALUES (14, '1,2,3', '2025-10-11 17:17:24', '2025-10-30 00:00:00', 3, 0);
+INSERT INTO `appointment` VALUES (19, '1', '2025-10-11 17:17:52', '2025-10-11 17:37:21', 10, 0);
+INSERT INTO `appointment` VALUES (29, '2,3', '2025-10-11 17:32:07', '2025-10-11 17:32:06', 5, 0);
+INSERT INTO `appointment` VALUES (30, '2,3', '2025-10-11 17:32:11', '2025-10-11 17:32:10', 3, 0);
+INSERT INTO `appointment` VALUES (31, '0,1,2,3', '2025-10-11 17:32:16', '2025-10-11 17:32:15', 10, 0);
+INSERT INTO `appointment` VALUES (32, '0,1', '2025-10-11 17:36:50', '2025-10-15 00:00:00', 5, 0);
+INSERT INTO `appointment` VALUES (33, '1,0', '2025-10-11 17:43:56', '2025-10-24 00:00:00', 3, 0);
+INSERT INTO `appointment` VALUES (34, '1,2,3', '2025-10-11 18:10:03', '2025-10-14 00:00:00', 10, 0);
+INSERT INTO `appointment` VALUES (35, '1,0', '2025-10-11 18:10:07', '2025-10-11 18:10:06', 5, 0);
 
 -- ----------------------------
 -- Table structure for hr
@@ -35,14 +72,16 @@ CREATE TABLE `hr`  (
   `userface` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of hr
 -- ----------------------------
-INSERT INTO `hr` VALUES (3, '系统管理员', '男', 30, '18568887789', '029-82881234', '深圳南山', 1, 'admin', '{noop}123', 'http://bpic.588ku.com/element_pic/01/40/00/64573ce2edc0728.jpg', NULL);
+INSERT INTO `hr` VALUES (3, '系统管理员', '女', 30, '18568887789', '029-82881234', '深圳南山The annotation @', 1, 'admin', '{noop}123', 'http://bpic.588ku.com/element_pic/01/40/00/64573ce2edc0728.jpg', NULL);
 INSERT INTO `hr` VALUES (5, 'User', '男', 30, '18568123489', '029-82123434', '火星', 1, 'user', '{noop}123', 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1514093920321&di=913e88c23f382933ef430024afd9128a&imgtype=0&src=http%3A%2F%2Fp.3761.com%2Fpic%2F9771429316733.jpg', NULL);
 INSERT INTO `hr` VALUES (10, 'Test', '男', 30, '18568123666', '029-82111555', 'Localhost', 1, 'test', '{noop}123', 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1517070040185&di=be0375e0c3db6c311b837b28c208f318&imgtype=0&src=http%3A%2F%2Fimg2.soyoung.com%2Fpost%2F20150213%2F6%2F20150213141918532.jpg', NULL);
+INSERT INTO `hr` VALUES (11, 'fzz', '女', 18, '15845965263', 'fzz', '深圳市宝安区下十围', 1, 'fzz', '{noop}123', NULL, NULL);
+INSERT INTO `hr` VALUES (13, 'lpgkobe', '男', 23, '15875954738', '0000---', '深圳市福田区下沙', 1, 'lpgkobe', '{noop}123456', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for hr_role
@@ -57,7 +96,7 @@ CREATE TABLE `hr_role`  (
   INDEX `hr_role_ibfk_1`(`hr_id`) USING BTREE,
   CONSTRAINT `hr_role_ibfk_1` FOREIGN KEY (`hr_id`) REFERENCES `hr` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT,
   CONSTRAINT `hr_role_ibfk_2` FOREIGN KEY (`rid`) REFERENCES `role` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 74 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 80 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of hr_role
@@ -65,6 +104,8 @@ CREATE TABLE `hr_role`  (
 INSERT INTO `hr_role` VALUES (1, 3, 6);
 INSERT INTO `hr_role` VALUES (72, 5, 1);
 INSERT INTO `hr_role` VALUES (73, 10, 13);
+INSERT INTO `hr_role` VALUES (78, 11, 1);
+INSERT INTO `hr_role` VALUES (79, 13, 1);
 
 -- ----------------------------
 -- Table structure for menu
@@ -84,7 +125,7 @@ CREATE TABLE `menu`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `parentId`(`parent_id`) USING BTREE,
   CONSTRAINT `menu_ibfk_1` FOREIGN KEY (`parent_id`) REFERENCES `menu` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 24 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 25 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of menu
@@ -95,7 +136,8 @@ INSERT INTO `menu` VALUES (4, '/', '/home', '/src/views/HomeView.vue', '服务�
 INSERT INTO `menu` VALUES (5, '/', '/home', '/src/views/HomeView.vue', '预留菜单', 'fa fa-bar-chart', NULL, 1, 1, 1);
 INSERT INTO `menu` VALUES (6, '/', '/home', '/src/views/HomeView.vue', '系统管理', 'fa fa-windows', NULL, 1, 1, 1);
 INSERT INTO `menu` VALUES (7, '/user/list/**', '/user/list', '/src/views/user/list.vue', '所有用户', NULL, NULL, 1, 2, 1);
-INSERT INTO `menu` VALUES (14, '/service/list/**', '/service/list', '/src/views/service/list.vue', '预约管理', NULL, NULL, 1, 4, 1);
+INSERT INTO `menu` VALUES (14, '/service/appointment/**', '/service/appointment', '/src/views/service/appointment.vue', '预约管理', NULL, NULL, 1, 4, 1);
+INSERT INTO `menu` VALUES (15, '/service/helth/**', '/service/helth', '/src/views/service/helth.vue', '健康管理', NULL, NULL, 1, 4, 1);
 INSERT INTO `menu` VALUES (23, '/system/notice/**', '/sys/notice', '/src/views/sys/notice.vue', '通知管理', NULL, NULL, 1, 6, 1);
 
 -- ----------------------------
@@ -111,16 +153,19 @@ CREATE TABLE `menu_role`  (
   INDEX `rid`(`rid`) USING BTREE,
   CONSTRAINT `menu_role_ibfk_1` FOREIGN KEY (`mid`) REFERENCES `menu` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `menu_role_ibfk_2` FOREIGN KEY (`rid`) REFERENCES `role` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 291 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 316 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of menu_role
 -- ----------------------------
+INSERT INTO `menu_role` VALUES (130, 7, 13);
 INSERT INTO `menu_role` VALUES (168, 14, 6);
 INSERT INTO `menu_role` VALUES (177, 23, 6);
+INSERT INTO `menu_role` VALUES (215, 15, 1);
 INSERT INTO `menu_role` VALUES (263, 14, 1);
 INSERT INTO `menu_role` VALUES (272, 23, 1);
 INSERT INTO `menu_role` VALUES (290, 7, 6);
+INSERT INTO `menu_role` VALUES (315, 15, 6);
 
 -- ----------------------------
 -- Table structure for nation
@@ -198,16 +243,16 @@ INSERT INTO `nation` VALUES (56, '基诺族');
 DROP TABLE IF EXISTS `notice`;
 CREATE TABLE `notice`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `content` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '通知内容',
+  `content` varchar(300) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '通知内容',
   `create_date` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP,
   `enabled` tinyint(1) NULL DEFAULT 1,
   `hr_id` int(11) NULL DEFAULT NULL COMMENT '创建人ID',
   `status` int(11) NULL DEFAULT 0 COMMENT '通知受理状态(0:待处理,1:已处理,2:紧急)',
   PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `content`(`content`) USING BTREE,
   INDEX `idx_hr_id`(`hr_id`) USING BTREE,
-  INDEX `idx_status`(`status`) USING BTREE,
-  UNIQUE INDEX `content`(`content`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 86 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+  INDEX `idx_status`(`status`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 115 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of notice
@@ -217,9 +262,9 @@ INSERT INTO `notice` VALUES (30, '通知内容11', '2018-01-11 21:13:48', 0, 5, 
 INSERT INTO `notice` VALUES (31, '通知内容555', '2018-01-11 00:00:00', 1, 10, 0);
 INSERT INTO `notice` VALUES (33, '通知内容55555', '2018-01-14 00:00:00', 0, 3, 0);
 INSERT INTO `notice` VALUES (34, 'notice', '2025-09-30 11:32:13', 0, 5, 0);
-INSERT INTO `notice` VALUES (35, '\t 通知内容\t 通知内容', '2025-09-30 15:10:44', 1, 10, 0);
-INSERT INTO `notice` VALUES (36, '\t 通知内容\t 通知内容\t 通知内容\t 通知内容', '2025-09-30 15:10:46', 1, 3, 0);
-INSERT INTO `notice` VALUES (37, '\t 通知内容\t 通知内容\t 通洒点水知内容\t 通知内容', '2025-09-30 15:10:50', 1, 5, 0);
+INSERT INTO `notice` VALUES (35, '	 通知内容	 通知内容', '2025-09-30 15:10:44', 1, 10, 0);
+INSERT INTO `notice` VALUES (36, '	 通知内容	 通知内容	 通知内容	 通知内容', '2025-09-30 15:10:46', 1, 3, 0);
+INSERT INTO `notice` VALUES (37, '	 通知内容	 通知内容	 通洒点水知内容	 通知内容', '2025-09-30 15:10:50', 1, 5, 0);
 INSERT INTO `notice` VALUES (38, '是的撒', '2025-09-30 15:10:51', 1, 10, 0);
 INSERT INTO `notice` VALUES (39, '刚刚发', '2025-09-30 15:10:53', 1, 3, 0);
 INSERT INTO `notice` VALUES (40, '是的是的', '2025-09-30 15:10:59', 1, 5, 0);
@@ -260,30 +305,35 @@ INSERT INTO `notice` VALUES (82, 'user推送00', '2025-10-10 16:59:19', 1, 5, 0)
 INSERT INTO `notice` VALUES (83, 'sss', '2025-10-10 17:49:33', 1, 5, 0);
 INSERT INTO `notice` VALUES (84, 'ssss', '2025-10-10 17:49:48', 1, 5, 0);
 INSERT INTO `notice` VALUES (85, 'sdsadsa', '2025-10-10 17:50:16', 1, 5, 0);
-
--- ----------------------------
--- Table structure for appointment
--- ----------------------------
-DROP TABLE IF EXISTS `appointment`;
-CREATE TABLE `appointment`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `content` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '预约内容',
-  `create_date` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `appointment_time` datetime(0) NULL DEFAULT NULL COMMENT '预约时间',
-  `hr_id` int(11) NULL DEFAULT NULL COMMENT '预约人ID',
-  `status` int(11) NULL DEFAULT 0 COMMENT '预约状态(0:待受理,1:已受理)',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_hr_id`(`hr_id`) USING BTREE,
-  INDEX `idx_status`(`status`) USING BTREE,
-  CONSTRAINT `appointment_ibfk_1` FOREIGN KEY (`hr_id`) REFERENCES `hr` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of appointment
--- ----------------------------
-INSERT INTO `appointment` VALUES (1, '健康咨询预约', '2025-10-11 09:00:00', '2025-10-12 14:00:00', 5, 0);
-INSERT INTO `appointment` VALUES (2, '常规体检预约', '2025-10-11 09:30:00', '2025-10-13 10:00:00', 10, 1);
-INSERT INTO `appointment` VALUES (3, '心理咨询服务', '2025-10-11 10:15:00', '2025-10-14 15:30:00', 5, 0);
+INSERT INTO `notice` VALUES (86, '489489489', '2025-10-11 16:36:20', 1, 5, 0);
+INSERT INTO `notice` VALUES (87, 'sds ', '2025-10-13 11:21:06', 1, 5, 0);
+INSERT INTO `notice` VALUES (88, 'sdas', '2025-10-13 11:31:14', 1, 5, 0);
+INSERT INTO `notice` VALUES (89, '// Socket.IO 连接组件', '2025-10-13 11:41:33', 1, 5, 0);
+INSERT INTO `notice` VALUES (90, 'sdsds', '2025-10-13 14:23:49', 1, 5, 0);
+INSERT INTO `notice` VALUES (91, 'el-popover', '2025-10-13 14:29:30', 1, 5, 0);
+INSERT INTO `notice` VALUES (92, 'notificationData', '2025-10-13 14:31:36', 1, 5, 0);
+INSERT INTO `notice` VALUES (93, 'msgData.content || \"有新的通知消息\"', '2025-10-13 14:33:31', 1, 5, 0);
+INSERT INTO `notice` VALUES (94, '', '2025-10-13 14:41:13', 1, 5, 0);
+INSERT INTO `notice` VALUES (95, 'sssss', '2025-10-13 14:46:14', 1, 5, 0);
+INSERT INTO `notice` VALUES (96, 'showClose', '2025-10-13 14:54:50', 1, 5, 0);
+INSERT INTO `notice` VALUES (97, 'getCurrentInstance', '2025-10-13 14:59:27', 1, 5, 0);
+INSERT INTO `notice` VALUES (98, 'dangerouslyUseHTMLString: true,', '2025-10-13 15:01:28', 1, 5, 0);
+INSERT INTO `notice` VALUES (99, 'debug', '2025-10-13 15:01:56', 1, 5, 0);
+INSERT INTO `notice` VALUES (100, 'ssssss', '2025-10-13 15:03:48', 1, 3, 0);
+INSERT INTO `notice` VALUES (101, 'http://192.168.255.10:5173/sys/noticehttp://192.168.255.10:5173/sys/notice', '2025-10-13 15:04:51', 1, 3, 0);
+INSERT INTO `notice` VALUES (102, '/192.168.255.10:5173/sys/noticehttp://192.168.255.10:517', '2025-10-13 15:05:15', 1, 3, 0);
+INSERT INTO `notice` VALUES (103, '/192.168.255.10:5173/sys/noticehttp://192.168.255.10:517/192.168.255.10:5173/sys/noticehttp://192.168.255.10:517/192.168.255.10:5173/sys/noticehttp://192.168.255.10:517', '2025-10-13 15:05:27', 1, 3, 0);
+INSERT INTO `notice` VALUES (104, '/192.168.255.10:5173/sys/noticehttp://192.168.255.10:517/192.168.255.10:5173/sys/noticehttp://192.168.255.10:517', '2025-10-13 15:05:38', 1, 3, 0);
+INSERT INTO `notice` VALUES (105, 'el-button', '2025-10-13 15:06:28', 1, 3, 0);
+INSERT INTO `notice` VALUES (106, 'el-buttonel-button', '2025-10-13 15:07:02', 1, 3, 0);
+INSERT INTO `notice` VALUES (107, 'el-buttonel-buttonel-button', '2025-10-13 15:07:18', 1, 3, 0);
+INSERT INTO `notice` VALUES (108, 'buttonbutton', '2025-10-13 15:07:37', 1, 3, 0);
+INSERT INTO `notice` VALUES (109, 'Click: () => {               proxy.$router.push(\"/sys/notice\");             }', '2025-10-13 15:08:42', 1, 3, 0);
+INSERT INTO `notice` VALUES (110, '收到一条新的求助信息：收到一条新的求助信息：', '2025-10-13 15:10:20', 1, 3, 0);
+INSERT INTO `notice` VALUES (111, '仅管理端接收一键求助按钮通知推送', '2025-10-13 15:11:53', 1, 3, 0);
+INSERT INTO `notice` VALUES (112, '仅管理端接收一键求助按钮通知推送仅管理端接收一键求助按钮通知推送', '2025-10-13 15:12:20', 1, 3, 0);
+INSERT INTO `notice` VALUES (113, 'isAdmin', '2025-10-13 15:12:49', 1, 3, 0);
+INSERT INTO `notice` VALUES (114, 'isAdminisAdminisAdmin', '2025-10-13 15:12:55', 1, 3, 0);
 
 -- ----------------------------
 -- Table structure for role
