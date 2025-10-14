@@ -48,7 +48,11 @@
         </el-table-column>
         <el-table-column prop="appointmentTime" label="预约时间" width="180" />
         <el-table-column label="状态" width="120">
-          <template #default="scope">{{ scope.row.status == 0 ? '待受理' : '已受理' }}</template>
+          <template #default="scope">
+            <el-tag
+              :type="scope.row.status == 0 ? 'warning' : 'success'"
+            >{{ scope.row.status == 0 ? '待受理' : '已受理' }}</el-tag>
+          </template>
         </el-table-column>
         <el-table-column label="操作" width="150">
           <template #default="scope">
@@ -76,13 +80,10 @@
       <div style="display: flex;justify-content: flex-end;margin-top: 10px">
         <el-pagination
           background
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
+          @change="paginationChange"
           :page-sizes="[5,10,20,30,50,100]"
           layout="sizes,prev, pager, next, jumper, ->, total"
           :total="total"
-          :current-page="page"
-          :page-size="size"
         />
       </div>
     </div>
@@ -173,23 +174,19 @@ function handleSearch() {
   appointmentList();
 }
 
+// 分页改变
+function paginationChange(newPage, newSize) {
+  page.value = size.value === newSize ? newPage : 1;
+  size.value = newSize;
+  appointmentList();
+}
+
 // 重置搜索表单
 function handleReset() {
   searchForm.value.id = "";
   searchForm.value.name = "";
   searchForm.value.phone = "";
   page.value = 1;
-  appointmentList();
-}
-
-// 分页处理
-function handleSizeChange(newSize) {
-  size.value = newSize;
-  appointmentList();
-}
-
-function handleCurrentChange(newPage) {
-  page.value = newPage;
   appointmentList();
 }
 

@@ -41,9 +41,9 @@
         <el-table-column prop="createDate" label="通知时间" />
         <el-table-column label="状态" width="120">
           <template #default="scope">
-            {{
-            scope.row.status == 0 ? '待受理' : '已受理'
-            }}
+            <el-tag
+              :type="scope.row.status == 0 ? 'warning' : 'success'"
+            >{{scope.row.status == 0 ? '待受理' : '已受理' }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column label="操作" v-if="isAdmin">
@@ -51,6 +51,7 @@
             <el-button
               v-if="scope.row.status == 0"
               size="small"
+              type="primary"
               @click="handleUpdate({ status: 1,id: scope.row.id })"
             >受理</el-button>
           </template>
@@ -113,7 +114,7 @@ function handleUpdate(row) {
 }
 
 function paginationChange(newPage, newSize) {
-  page.value = newPage;
+  page.value = size.value === newSize ? newPage : 1;
   size.value = newSize;
   noticeList();
 }

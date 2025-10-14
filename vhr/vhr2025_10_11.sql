@@ -11,7 +11,7 @@
  Target Server Version : 50736
  File Encoding         : 65001
 
- Date: 11/10/2025 18:11:27
+ Date: 13/10/2025 15:19:54
 */
 
 SET NAMES utf8mb4;
@@ -37,22 +37,22 @@ CREATE TABLE `appointment`  (
 -- ----------------------------
 -- Records of appointment
 -- ----------------------------
-INSERT INTO `appointment` VALUES (1, '0', '2025-10-11 09:00:00', '2025-10-12 14:00:00', 3, 1);
-INSERT INTO `appointment` VALUES (2, '1', '2025-10-11 09:30:00', '2025-10-13 10:00:00', 10, 1);
-INSERT INTO `appointment` VALUES (3, '2,1', '2025-10-11 10:15:00', '2025-10-14 15:30:00', 5, 1);
-INSERT INTO `appointment` VALUES (10, '0,1,3', '2025-10-11 17:14:30', '2025-10-11 17:14:55', 5, 1);
-INSERT INTO `appointment` VALUES (11, '1,2,3', '2025-10-11 17:16:00', '2025-10-16 02:02:02', 5, 1);
-INSERT INTO `appointment` VALUES (12, '0,1', '2025-10-11 17:17:00', '2025-10-24 00:00:00', 5, 1);
-INSERT INTO `appointment` VALUES (13, '0,1,2', '2025-10-11 17:17:19', '2025-10-31 00:00:00', 5, 1);
-INSERT INTO `appointment` VALUES (14, '1,2,3', '2025-10-11 17:17:24', '2025-10-30 00:00:00', 5, 1);
-INSERT INTO `appointment` VALUES (19, '1', '2025-10-11 17:17:52', '2025-10-11 17:37:21', 5, 1);
-INSERT INTO `appointment` VALUES (29, '2,3', '2025-10-11 17:32:07', '2025-10-11 17:32:06', 5, 1);
-INSERT INTO `appointment` VALUES (30, '2,3', '2025-10-11 17:32:11', '2025-10-11 17:32:10', 5, 1);
-INSERT INTO `appointment` VALUES (31, '0,1,2,3', '2025-10-11 17:32:16', '2025-10-11 17:32:15', 5, 1);
-INSERT INTO `appointment` VALUES (32, '0,1', '2025-10-11 17:36:50', '2025-10-15 00:00:00', 5, 1);
-INSERT INTO `appointment` VALUES (33, '1,0', '2025-10-11 17:43:56', '2025-10-24 00:00:00', 5, 1);
-INSERT INTO `appointment` VALUES (34, '1,2,3', '2025-10-11 18:10:03', '2025-10-14 00:00:00', 5, 0);
-INSERT INTO `appointment` VALUES (35, '1,0', '2025-10-11 18:10:07', '2025-10-11 18:10:06', 5, 1);
+INSERT INTO `appointment` VALUES (1, '0', '2025-10-11 09:00:00', '2025-10-12 14:00:00', 3, 0);
+INSERT INTO `appointment` VALUES (2, '1', '2025-10-11 09:30:00', '2025-10-13 10:00:00', 10, 0);
+INSERT INTO `appointment` VALUES (3, '2,1', '2025-10-11 10:15:00', '2025-10-14 15:30:00', 5, 0);
+INSERT INTO `appointment` VALUES (10, '0,1,3', '2025-10-11 17:14:30', '2025-10-11 17:14:55', 5, 0);
+INSERT INTO `appointment` VALUES (11, '1,2,3', '2025-10-11 17:16:00', '2025-10-16 02:02:02', 3, 0);
+INSERT INTO `appointment` VALUES (12, '0,1', '2025-10-11 17:17:00', '2025-10-24 00:00:00', 10, 0);
+INSERT INTO `appointment` VALUES (13, '0,1,2', '2025-10-11 17:17:19', '2025-10-31 00:00:00', 5, 0);
+INSERT INTO `appointment` VALUES (14, '1,2,3', '2025-10-11 17:17:24', '2025-10-30 00:00:00', 3, 0);
+INSERT INTO `appointment` VALUES (19, '1', '2025-10-11 17:17:52', '2025-10-11 17:37:21', 10, 0);
+INSERT INTO `appointment` VALUES (29, '2,3', '2025-10-11 17:32:07', '2025-10-11 17:32:06', 5, 0);
+INSERT INTO `appointment` VALUES (30, '2,3', '2025-10-11 17:32:11', '2025-10-11 17:32:10', 3, 0);
+INSERT INTO `appointment` VALUES (31, '0,1,2,3', '2025-10-11 17:32:16', '2025-10-11 17:32:15', 10, 0);
+INSERT INTO `appointment` VALUES (32, '0,1', '2025-10-11 17:36:50', '2025-10-15 00:00:00', 5, 0);
+INSERT INTO `appointment` VALUES (33, '1,0', '2025-10-11 17:43:56', '2025-10-24 00:00:00', 3, 0);
+INSERT INTO `appointment` VALUES (34, '1,2,3', '2025-10-11 18:10:03', '2025-10-14 00:00:00', 10, 0);
+INSERT INTO `appointment` VALUES (35, '1,0', '2025-10-11 18:10:07', '2025-10-11 18:10:06', 5, 0);
 
 -- ----------------------------
 -- Table structure for hr
@@ -235,16 +235,16 @@ INSERT INTO `nation` VALUES (56, '基诺族');
 DROP TABLE IF EXISTS `notice`;
 CREATE TABLE `notice`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `content` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '通知内容',
+  `content` varchar(300) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '通知内容',
   `create_date` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP,
   `enabled` tinyint(1) NULL DEFAULT 1,
   `hr_id` int(11) NULL DEFAULT NULL COMMENT '创建人ID',
   `status` int(11) NULL DEFAULT 0 COMMENT '通知受理状态(0:待处理,1:已处理,2:紧急)',
   PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `content`(`content`) USING BTREE,
   INDEX `idx_hr_id`(`hr_id`) USING BTREE,
-  INDEX `idx_status`(`status`) USING BTREE,
-  UNIQUE INDEX `content`(`content`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 87 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+  INDEX `idx_status`(`status`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 115 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of notice
@@ -298,6 +298,34 @@ INSERT INTO `notice` VALUES (83, 'sss', '2025-10-10 17:49:33', 1, 5, 0);
 INSERT INTO `notice` VALUES (84, 'ssss', '2025-10-10 17:49:48', 1, 5, 0);
 INSERT INTO `notice` VALUES (85, 'sdsadsa', '2025-10-10 17:50:16', 1, 5, 0);
 INSERT INTO `notice` VALUES (86, '489489489', '2025-10-11 16:36:20', 1, 5, 0);
+INSERT INTO `notice` VALUES (87, 'sds ', '2025-10-13 11:21:06', 1, 5, 0);
+INSERT INTO `notice` VALUES (88, 'sdas', '2025-10-13 11:31:14', 1, 5, 0);
+INSERT INTO `notice` VALUES (89, '// Socket.IO 连接组件', '2025-10-13 11:41:33', 1, 5, 0);
+INSERT INTO `notice` VALUES (90, 'sdsds', '2025-10-13 14:23:49', 1, 5, 0);
+INSERT INTO `notice` VALUES (91, 'el-popover', '2025-10-13 14:29:30', 1, 5, 0);
+INSERT INTO `notice` VALUES (92, 'notificationData', '2025-10-13 14:31:36', 1, 5, 0);
+INSERT INTO `notice` VALUES (93, 'msgData.content || \"有新的通知消息\"', '2025-10-13 14:33:31', 1, 5, 0);
+INSERT INTO `notice` VALUES (94, '', '2025-10-13 14:41:13', 1, 5, 0);
+INSERT INTO `notice` VALUES (95, 'sssss', '2025-10-13 14:46:14', 1, 5, 0);
+INSERT INTO `notice` VALUES (96, 'showClose', '2025-10-13 14:54:50', 1, 5, 0);
+INSERT INTO `notice` VALUES (97, 'getCurrentInstance', '2025-10-13 14:59:27', 1, 5, 0);
+INSERT INTO `notice` VALUES (98, 'dangerouslyUseHTMLString: true,', '2025-10-13 15:01:28', 1, 5, 0);
+INSERT INTO `notice` VALUES (99, 'debug', '2025-10-13 15:01:56', 1, 5, 0);
+INSERT INTO `notice` VALUES (100, 'ssssss', '2025-10-13 15:03:48', 1, 3, 0);
+INSERT INTO `notice` VALUES (101, 'http://192.168.255.10:5173/sys/noticehttp://192.168.255.10:5173/sys/notice', '2025-10-13 15:04:51', 1, 3, 0);
+INSERT INTO `notice` VALUES (102, '/192.168.255.10:5173/sys/noticehttp://192.168.255.10:517', '2025-10-13 15:05:15', 1, 3, 0);
+INSERT INTO `notice` VALUES (103, '/192.168.255.10:5173/sys/noticehttp://192.168.255.10:517/192.168.255.10:5173/sys/noticehttp://192.168.255.10:517/192.168.255.10:5173/sys/noticehttp://192.168.255.10:517', '2025-10-13 15:05:27', 1, 3, 0);
+INSERT INTO `notice` VALUES (104, '/192.168.255.10:5173/sys/noticehttp://192.168.255.10:517/192.168.255.10:5173/sys/noticehttp://192.168.255.10:517', '2025-10-13 15:05:38', 1, 3, 0);
+INSERT INTO `notice` VALUES (105, 'el-button', '2025-10-13 15:06:28', 1, 3, 0);
+INSERT INTO `notice` VALUES (106, 'el-buttonel-button', '2025-10-13 15:07:02', 1, 3, 0);
+INSERT INTO `notice` VALUES (107, 'el-buttonel-buttonel-button', '2025-10-13 15:07:18', 1, 3, 0);
+INSERT INTO `notice` VALUES (108, 'buttonbutton', '2025-10-13 15:07:37', 1, 3, 0);
+INSERT INTO `notice` VALUES (109, 'Click: () => {               proxy.$router.push(\"/sys/notice\");             }', '2025-10-13 15:08:42', 1, 3, 0);
+INSERT INTO `notice` VALUES (110, '收到一条新的求助信息：收到一条新的求助信息：', '2025-10-13 15:10:20', 1, 3, 0);
+INSERT INTO `notice` VALUES (111, '仅管理端接收一键求助按钮通知推送', '2025-10-13 15:11:53', 1, 3, 0);
+INSERT INTO `notice` VALUES (112, '仅管理端接收一键求助按钮通知推送仅管理端接收一键求助按钮通知推送', '2025-10-13 15:12:20', 1, 3, 0);
+INSERT INTO `notice` VALUES (113, 'isAdmin', '2025-10-13 15:12:49', 1, 3, 0);
+INSERT INTO `notice` VALUES (114, 'isAdminisAdminisAdmin', '2025-10-13 15:12:55', 1, 3, 0);
 
 -- ----------------------------
 -- Table structure for role

@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
  * @author javaboy
  * @since 2024-01-03
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Hr implements Serializable, UserDetails {
 
     private static final long serialVersionUID = 1L;
