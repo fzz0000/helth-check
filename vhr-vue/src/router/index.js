@@ -42,6 +42,11 @@ const router = createRouter({
       name: "预约管理",
       component: AppointmentManagement,
     },
+    {
+      path: "/service/health",
+      name: "健康管理",
+      component: () => import("@/views/service/health.vue"),
+    },
     // 用户个人信息
     {
       path: "/user-info",

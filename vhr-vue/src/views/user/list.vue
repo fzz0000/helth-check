@@ -39,11 +39,16 @@
           </template>
         </el-table-column>
         <el-table-column prop="username" label="用户名"></el-table-column>
-        <el-table-column label="操作" width="240" fixed="right">
+        <el-table-column label="操作" width="320" fixed="right">
           <template #default="scope">
             <el-button type="primary" size="small" @click="handleViewUser(scope.row.id)">查看</el-button>
             <el-button size="small" @click="handleEditUser(scope.row.id)">修改</el-button>
             <el-button type="danger" size="small" @click="handleDeleteUser(scope.row.id)">删除</el-button>
+            <el-button
+              size="small"
+              style="margin-left: 10px"
+              @click="handleAddHealthRecord(scope.row.id)"
+            >上报健康信息</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -69,6 +74,14 @@
       @close="handleDialogClose"
       @success="handleDialogSuccess"
     />
+
+    <!-- 引入健康信息上报组件 -->
+    <HealthAdd
+      v-model="showHealthRecordDialog"
+      :form-data="healthRecordForm"
+      :edit-mode="editMode"
+      @submit="handleSubmit"
+    />
   </div>
 </template>
 
@@ -82,7 +95,9 @@ import {
   updateUser,
   deleteUser
 } from "@/api/user/user.js";
+import { addHealthRecord } from "@/api/service/health.js";
 import ModifyDialog from "./components/modify.vue";
+import HealthAdd from "@/views/service/components/health-add.vue";
 
 // 定义响应式数据
 const userList = ref([]);
@@ -97,6 +112,20 @@ const dialogVisible = ref(false);
 const dialogTitle = ref("");
 const dialogType = ref(""); // 'add', 'edit', 'view'
 const selectedUserId = ref(null);
+
+// 健康信息弹窗相关
+const showHealthRecordDialog = ref(false);
+const healthRecordForm = ref({
+  id: null,
+  hrId: null,
+  systolicPressure: null,
+  diastolicPressure: null,
+  heartRate: null,
+  fastingGlucose: null,
+  weight: null,
+  remark: ""
+});
+const editMode = ref(false);
 
 // 加载用户列表
 const loadUserList = async () => {
@@ -185,6 +214,29 @@ const handleDeleteUser = async id => {
       console.error("删除失败:", error);
     }
   }
+};
+
+// 打开上报健康信息弹窗
+const handleAddHealthRecord = hrId => {
+  editMode.value = false;
+  healthRecordForm.value = {
+    id: null,
+    hrId: hrId,
+    systolicPressure: null,
+    diastolicPressure: null,
+    heartRate: null,
+    fastingGlucose: null,
+    weight: null,
+    remark: ""
+  };
+  showHealthRecordDialog.value = true;
+};
+
+// 处理健康信息提交
+const handleSubmit = async formData => {
+  const result = await addHealthRecord(formData);
+  ElMessage.success(result.message || "健康信息上报成功");
+  showHealthRecordDialog.value = false;
 };
 
 // 组件挂载时加载用户列表

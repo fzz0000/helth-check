@@ -110,7 +110,7 @@ import {
 import { ElMessage } from "element-plus";
 import { userStore } from "@/stores/index.js";
 import { healthMetrics } from "@/utils/lookup.js";
-import AppointmentDialog from "./components/add.vue";
+import AppointmentDialog from "./components/appointment-add.vue";
 
 const uStore = userStore();
 

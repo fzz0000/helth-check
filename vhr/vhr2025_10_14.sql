@@ -11,7 +11,7 @@
  Target Server Version : 50736
  File Encoding         : 65001
 
- Date: 14/10/2025 16:09:25
+ Date: 14/10/2025 16:28:47
 */
 
 SET NAMES utf8mb4;
@@ -53,6 +53,31 @@ INSERT INTO `appointment` VALUES (32, '0,1', '2025-10-11 17:36:50', '2025-10-15 
 INSERT INTO `appointment` VALUES (33, '1,0', '2025-10-11 17:43:56', '2025-10-24 00:00:00', 3, 0);
 INSERT INTO `appointment` VALUES (34, '1,2,3', '2025-10-11 18:10:03', '2025-10-14 00:00:00', 10, 0);
 INSERT INTO `appointment` VALUES (35, '1,0', '2025-10-11 18:10:07', '2025-10-11 18:10:06', 5, 0);
+
+-- ----------------------------
+-- Table structure for health
+-- ----------------------------
+DROP TABLE IF EXISTS `health`;
+CREATE TABLE `health`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '健康记录ID',
+  `hr_id` int(11) NOT NULL COMMENT '关联用户ID',
+  `systolic_pressure` int(11) NULL DEFAULT NULL COMMENT '收缩压(mmHg)',
+  `diastolic_pressure` int(11) NULL DEFAULT NULL COMMENT '舒张压(mmHg)',
+  `heart_rate` int(11) NULL DEFAULT NULL COMMENT '心率(次/分钟)',
+  `fasting_glucose` double NULL DEFAULT NULL COMMENT '空腹血糖(mmol/L)',
+  `weight` double NULL DEFAULT NULL COMMENT '体重(KG)',
+  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注信息',
+  `create_date` datetime(0) NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_hr_id`(`hr_id`) USING BTREE,
+  INDEX `idx_create_date`(`create_date`) USING BTREE,
+  CONSTRAINT `health_ibfk_1` FOREIGN KEY (`hr_id`) REFERENCES `hr` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '健康管理记录表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of health
+-- ----------------------------
+INSERT INTO `health` VALUES (1, 5, 120, 80, 100, 30, 60, '首次测量', '2025-10-13 16:27:36');
 
 -- ----------------------------
 -- Table structure for hr
