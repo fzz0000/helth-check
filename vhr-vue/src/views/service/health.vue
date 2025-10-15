@@ -243,9 +243,9 @@ const handleGenerateReport = async () => {
       yearData.data
     );
 
-    // 临时apiKey
+    // 临时apiKey，使用超限需要在https://openrouter.ai/settings/keys重新申请
     const apiKey =
-      "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";
+      "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";
 
     // 创建新的控制器和超时处理
     controllerRef.current = new AbortController();
