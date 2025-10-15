@@ -88,6 +88,8 @@
 <script setup>
 import { ref, reactive, onMounted } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
+import dayjs from "dayjs";
+
 import {
   getUserList,
   getUserById,
@@ -118,6 +120,7 @@ const showHealthRecordDialog = ref(false);
 const healthRecordForm = ref({
   id: null,
   hrId: null,
+  measureTime: new Date(),
   systolicPressure: null,
   diastolicPressure: null,
   heartRate: null,
@@ -222,6 +225,7 @@ const handleAddHealthRecord = hrId => {
   healthRecordForm.value = {
     id: null,
     hrId: hrId,
+    measureTime: dayjs().format("YYYY-MM-DD HH:mm:ss"),
     systolicPressure: null,
     diastolicPressure: null,
     heartRate: null,

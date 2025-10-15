@@ -61,4 +61,13 @@ public interface IHealthService extends IService<Health> {
      */
     RespBean updateHealthRecord(Health healthRecord);
 
+    /**
+     * 获取用户健康数据明细，按指定维度聚合
+     * 
+     * @param hrId 用户ID
+     * @param dimension 维度类型：week(周)、month(月)、year(年)
+     * @return 聚合后的健康数据
+     */
+    RespBean getHealthDataByDimension(Integer hrId, String dimension);
+
 }

@@ -57,10 +57,11 @@
         <el-table-column prop="fastingGlucose" label="空腹血糖(mmol/L)" width="180" />
         <el-table-column prop="weight" label="体重(KG)" width="120" />
         <el-table-column prop="remark" label="备注" width="200" />
-        <el-table-column prop="createDate" label="创建时间" width="180" />
+        <el-table-column prop="measureTime" label="检测时间" width="180" />
         <el-table-column label="操作" width="200">
           <template #default="scope">
             <el-button size="small" type="primary" @click="handleUpdateHealthRecord(scope.row)">修改</el-button>
+            <el-button size="small" @click="handleViewHealthRecord(scope.row)">查看详情</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -93,12 +94,29 @@
         </span>
       </template>
     </el-dialog>
+
+    <!-- 健康数据明细弹窗 -->
+    <el-dialog
+      v-model="showDetailDialog"
+      title="健康数据明细"
+      width="900px"
+      height="90vh"
+      fullscreen="false"
+    >
+      <HealthDetail :visible="showDetailDialog" :user-id="detailUserId" />
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="showDetailDialog = false">关闭</el-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import { userStore } from "@/stores/user.js";
+import dayjs from "dayjs";
 import {
   getHealthRecords,
   addHealthRecord,
@@ -108,6 +126,7 @@ import {
 import { Document, Plus } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
 import HealthAdd from "./components/health-add.vue";
+import HealthDetail from "./components/health-detail.vue";
 
 const store = userStore();
 const isAdmin = computed(() => store.isAdmin);
@@ -128,13 +147,18 @@ const searchForm = ref({
 // 弹窗相关
 const showHealthRecordDialog = ref(false);
 const showAiReportDialog = ref(false);
+const showDetailDialog = ref(false);
 const aiReport = ref("");
 const editMode = ref(false);
+
+// 查看详情的用户ID
+const detailUserId = ref(null);
 
 // 表单数据
 const healthRecordForm = ref({
   id: null,
   hrId: null,
+  measureTime: null,
   systolicPressure: null,
   diastolicPressure: null,
   heartRate: null,
@@ -194,12 +218,19 @@ const handleGenerateReport = () => {
   });
 };
 
+// 查看健康数据明细
+const handleViewHealthRecord = row => {
+  detailUserId.value = row.hrId;
+  showDetailDialog.value = true;
+};
+
 // 打开上报健康信息弹窗（管理员从列表选择用户）
 const handleAddHealthRecord = () => {
   editMode.value = false;
   healthRecordForm.value = {
     id: null,
     hrId: null,
+    measureTime: dayjs().format("YYYY-MM-DD HH:mm:ss"),
     systolicPressure: null,
     diastolicPressure: null,
     heartRate: null,
@@ -216,6 +247,7 @@ const handleUpdateHealthRecord = row => {
   healthRecordForm.value = {
     id: row.id,
     hrId: row.hrId,
+    measureTime: dayjs(row.measureTime).format("YYYY-MM-DD HH:mm:ss"),
     systolicPressure: row.systolicPressure,
     diastolicPressure: row.diastolicPressure,
     heartRate: row.heartRate,

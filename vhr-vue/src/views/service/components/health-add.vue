@@ -14,6 +14,15 @@
           style="width: 100%;"
         />
       </el-form-item>
+      <el-form-item label="测量时间" prop="measureTime">
+        <el-date-picker
+          v-model="healthRecordForm.measureTime"
+          type="datetime"
+          placeholder="请选择测量时间"
+          value-format="YYYY-MM-DD HH:mm:ss"
+          style="width: 100%;"
+        />
+      </el-form-item>
       <el-form-item label="收缩压(mmHg)" prop="systolicPressure">
         <el-input v-model.number="healthRecordForm.systolicPressure" placeholder="请输入收缩压" />
       </el-form-item>
@@ -46,6 +55,7 @@
 import { ref, defineProps, defineEmits, watch, onMounted } from "vue";
 import { ElMessage } from "element-plus";
 import { getUserList } from "@/api/user/user.js";
+import dayjs from "dayjs";
 
 // 定义props
 const props = defineProps({
@@ -58,6 +68,7 @@ const props = defineProps({
     default: () => ({
       id: null,
       hrId: null,
+      measureTime: dayjs().format("YYYY-MM-DD HH:mm:ss"),
       systolicPressure: null,
       diastolicPressure: null,
       heartRate: null,
@@ -120,6 +131,9 @@ const rules = {
   weight: [
     { required: true, message: "请输入体重", trigger: "blur" },
     { type: "number", message: "请输入有效的数值", trigger: "blur" }
+  ],
+  measureTime: [
+    { required: true, message: "请选择测量时间", trigger: "change" }
   ]
 };
 

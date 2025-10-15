@@ -69,6 +69,11 @@ public class Health implements Serializable {
     private LocalDateTime createDate;
 
     /**
+     * 测量时间
+     */
+    private LocalDateTime measureTime;
+
+    /**
      * 关联的用户信息
      */
     @TableField(exist = false)
@@ -146,6 +151,14 @@ public class Health implements Serializable {
         this.createDate = createDate;
     }
 
+    public LocalDateTime getMeasureTime() {
+        return measureTime;
+    }
+
+    public void setMeasureTime(LocalDateTime measureTime) {
+        this.measureTime = measureTime;
+    }
+
     public Hr getHr() {
         return hr;
     }
@@ -156,7 +169,7 @@ public class Health implements Serializable {
 
     @Override
     public String toString() {
-        return "Health{" +
+        return "HealthRecord{" +
                 "id = " + id +
                 ", hrId = " + hrId +
                 ", systolicPressure = " + systolicPressure +
@@ -166,6 +179,7 @@ public class Health implements Serializable {
                 ", weight = " + weight +
                 ", remark = " + remark +
                 ", createDate = " + createDate +
+                ", measureTime = " + measureTime +
                 "}";
     }
 }

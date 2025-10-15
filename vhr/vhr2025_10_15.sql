@@ -11,7 +11,7 @@
  Target Server Version : 50736
  File Encoding         : 65001
 
- Date: 13/10/2025 15:19:54
+ Date: 15/10/2025 14:43:40
 */
 
 SET NAMES utf8mb4;
@@ -55,6 +55,58 @@ INSERT INTO `appointment` VALUES (34, '1,2,3', '2025-10-11 18:10:03', '2025-10-1
 INSERT INTO `appointment` VALUES (35, '1,0', '2025-10-11 18:10:07', '2025-10-11 18:10:06', 5, 0);
 
 -- ----------------------------
+-- Table structure for health
+-- ----------------------------
+DROP TABLE IF EXISTS `health`;
+CREATE TABLE `health`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '健康记录ID',
+  `hr_id` int(11) NOT NULL COMMENT '关联用户ID',
+  `systolic_pressure` int(11) NULL DEFAULT NULL COMMENT '收缩压(mmHg)',
+  `diastolic_pressure` int(11) NULL DEFAULT NULL COMMENT '舒张压(mmHg)',
+  `heart_rate` int(11) NULL DEFAULT NULL COMMENT '心率(次/分钟)',
+  `fasting_glucose` double NULL DEFAULT NULL COMMENT '空腹血糖(mmol/L)',
+  `weight` double NULL DEFAULT NULL COMMENT '体重(KG)',
+  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注信息',
+  `create_date` datetime(0) NOT NULL COMMENT '创建时间',
+  `measure_time` datetime(0) NULL DEFAULT NULL COMMENT '测量时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_hr_id`(`hr_id`) USING BTREE,
+  INDEX `idx_create_date`(`create_date`) USING BTREE,
+  INDEX `idx_measure_time`(`measure_time`) USING BTREE,
+  CONSTRAINT `health_ibfk_1` FOREIGN KEY (`hr_id`) REFERENCES `hr` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
+) ENGINE = InnoDB AUTO_INCREMENT = 48 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '健康管理记录表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of health
+-- ----------------------------
+INSERT INTO `health` VALUES (22, 3, 223, 23, 23, 43, 3, '4343', '2025-10-15 11:22:47', '2025-10-15 11:22:39');
+INSERT INTO `health` VALUES (23, 13, 223, 23, 24, 34, 23, '232', '2025-10-15 11:38:43', '2025-10-15 11:38:37');
+INSERT INTO `health` VALUES (24, 13, 23, 34, 34, 43, 343, '434', '2025-10-15 11:38:55', '2025-10-14 11:38:46');
+INSERT INTO `health` VALUES (25, 5, 43, 34, 34, 34, 343, '34', '2025-10-15 11:39:10', '2025-10-08 11:39:02');
+INSERT INTO `health` VALUES (26, 5, 434, 43, 43, 43, 343, '34', '2025-10-15 11:39:22', '2025-10-01 11:39:13');
+INSERT INTO `health` VALUES (27, 5, 54, 67, 6, 67, 767, '676', '2025-10-15 11:39:38', '2025-10-22 11:39:24');
+INSERT INTO `health` VALUES (28, 5, 878, 7, 434, 3, 465, '67687', '2025-10-15 11:39:48', '2025-10-29 11:39:39');
+INSERT INTO `health` VALUES (29, 5, 546, 45, 65, 5454, 43, '54', '2025-10-15 11:40:03', '2025-10-31 11:39:54');
+INSERT INTO `health` VALUES (30, 5, 34, 434, 3, 34, 343, '3', '2025-10-15 11:40:19', '2025-09-01 11:40:05');
+INSERT INTO `health` VALUES (31, 5, 5, 6576, 78, 77, 94, '343', '2025-10-15 11:40:29', '2025-09-08 11:40:20');
+INSERT INTO `health` VALUES (32, 5, 23, 234345, 5, 46, 56, '576876', '2025-10-15 11:40:40', '2025-09-15 11:40:30');
+INSERT INTO `health` VALUES (33, 5, 23, 34, 4545, 46, 57, '78787', '2025-10-15 11:40:50', '2025-09-22 11:40:41');
+INSERT INTO `health` VALUES (34, 5, 787, 787, 878, 8, 787, '8', '2025-10-15 11:40:59', '2025-09-29 11:40:50');
+INSERT INTO `health` VALUES (35, 5, 34, 45, 56, 576, 76, '56', '2025-10-15 11:50:33', '2025-08-26 11:50:23');
+INSERT INTO `health` VALUES (36, 5, 23, 34, 556, 875, 7, '65', '2025-10-15 11:51:06', '2025-08-07 11:50:51');
+INSERT INTO `health` VALUES (37, 5, 564, 765, 75, 56, 45, '523', '2025-10-15 11:51:18', '2025-08-15 11:51:07');
+INSERT INTO `health` VALUES (38, 5, 453, 56, 65, 4, 4, '35', '2025-10-15 11:51:28', '2025-08-22 11:51:19');
+INSERT INTO `health` VALUES (39, 5, 35, 3, 3, 45, 334, '543', '2025-10-15 11:51:39', '2025-08-29 11:51:28');
+INSERT INTO `health` VALUES (40, 5, 34, 45, 435, 345, 34, '543', '2025-10-15 11:51:52', '2024-10-01 11:51:41');
+INSERT INTO `health` VALUES (41, 5, 35, 56, 7, 4, 45, '343', '2025-10-15 11:52:07', '2024-10-15 11:51:52');
+INSERT INTO `health` VALUES (42, 5, 53, 324, 23, 23423, 3, '23', '2025-10-15 11:52:16', '2024-10-22 11:52:07');
+INSERT INTO `health` VALUES (43, 5, 3243, 32, 423, 432, 2, '52', '2025-10-15 11:52:26', '2024-10-29 11:52:17');
+INSERT INTO `health` VALUES (44, 5, 325, 32, 4, 342, 43, '4324', '2025-10-15 11:52:36', '2024-09-02 11:52:26');
+INSERT INTO `health` VALUES (45, 5, 456, 56, 56, 5, 65, '6', '2025-10-15 11:52:50', '2024-09-17 11:52:37');
+INSERT INTO `health` VALUES (46, 5, 65, 5, 6, 65, 5, '45', '2025-10-15 11:53:04', '2024-09-26 11:52:51');
+INSERT INTO `health` VALUES (47, 5, 12, 34, 45, 56, 89, 'dd', '2025-10-15 14:38:49', '2025-10-15 14:38:37');
+
+-- ----------------------------
 -- Table structure for hr
 -- ----------------------------
 DROP TABLE IF EXISTS `hr`;
@@ -72,14 +124,16 @@ CREATE TABLE `hr`  (
   `userface` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of hr
 -- ----------------------------
-INSERT INTO `hr` VALUES (3, '系统管理员', '男', 30, '18568887789', '029-82881234', '深圳南山', 1, 'admin', '{noop}123', 'http://bpic.588ku.com/element_pic/01/40/00/64573ce2edc0728.jpg', NULL);
+INSERT INTO `hr` VALUES (3, '系统管理员', '女', 30, '18568887789', '029-82881234', '深圳南山The annotation @', 1, 'admin', '{noop}123', 'http://bpic.588ku.com/element_pic/01/40/00/64573ce2edc0728.jpg', NULL);
 INSERT INTO `hr` VALUES (5, 'User', '男', 30, '18568123489', '029-82123434', '火星', 1, 'user', '{noop}123', 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1514093920321&di=913e88c23f382933ef430024afd9128a&imgtype=0&src=http%3A%2F%2Fp.3761.com%2Fpic%2F9771429316733.jpg', NULL);
 INSERT INTO `hr` VALUES (10, 'Test', '男', 30, '18568123666', '029-82111555', 'Localhost', 1, 'test', '{noop}123', 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1517070040185&di=be0375e0c3db6c311b837b28c208f318&imgtype=0&src=http%3A%2F%2Fimg2.soyoung.com%2Fpost%2F20150213%2F6%2F20150213141918532.jpg', NULL);
+INSERT INTO `hr` VALUES (11, 'fzz', '女', 18, '15845965263', 'fzz', '深圳市宝安区下十围', 1, 'fzz', '{noop}123', NULL, NULL);
+INSERT INTO `hr` VALUES (13, 'lpgkobe', '男', 23, '15875954738', '0000---', '深圳市福田区下沙', 1, 'lpgkobe', '{noop}123456', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for hr_role
@@ -94,7 +148,7 @@ CREATE TABLE `hr_role`  (
   INDEX `hr_role_ibfk_1`(`hr_id`) USING BTREE,
   CONSTRAINT `hr_role_ibfk_1` FOREIGN KEY (`hr_id`) REFERENCES `hr` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT,
   CONSTRAINT `hr_role_ibfk_2` FOREIGN KEY (`rid`) REFERENCES `role` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 74 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 80 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of hr_role
@@ -102,6 +156,8 @@ CREATE TABLE `hr_role`  (
 INSERT INTO `hr_role` VALUES (1, 3, 6);
 INSERT INTO `hr_role` VALUES (72, 5, 1);
 INSERT INTO `hr_role` VALUES (73, 10, 13);
+INSERT INTO `hr_role` VALUES (78, 11, 1);
+INSERT INTO `hr_role` VALUES (79, 13, 1);
 
 -- ----------------------------
 -- Table structure for menu
@@ -121,7 +177,7 @@ CREATE TABLE `menu`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `parentId`(`parent_id`) USING BTREE,
   CONSTRAINT `menu_ibfk_1` FOREIGN KEY (`parent_id`) REFERENCES `menu` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 24 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 25 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of menu
@@ -133,6 +189,7 @@ INSERT INTO `menu` VALUES (5, '/', '/home', '/src/views/HomeView.vue', '预留�
 INSERT INTO `menu` VALUES (6, '/', '/home', '/src/views/HomeView.vue', '系统管理', 'fa fa-windows', NULL, 1, 1, 1);
 INSERT INTO `menu` VALUES (7, '/user/list/**', '/user/list', '/src/views/user/list.vue', '所有用户', NULL, NULL, 1, 2, 1);
 INSERT INTO `menu` VALUES (14, '/service/appointment/**', '/service/appointment', '/src/views/service/appointment.vue', '预约管理', NULL, NULL, 1, 4, 1);
+INSERT INTO `menu` VALUES (15, '/service/health/**', '/service/health', '/src/views/service/health.vue', '健康管理', NULL, NULL, 1, 4, 1);
 INSERT INTO `menu` VALUES (23, '/system/notice/**', '/sys/notice', '/src/views/sys/notice.vue', '通知管理', NULL, NULL, 1, 6, 1);
 
 -- ----------------------------
@@ -148,16 +205,19 @@ CREATE TABLE `menu_role`  (
   INDEX `rid`(`rid`) USING BTREE,
   CONSTRAINT `menu_role_ibfk_1` FOREIGN KEY (`mid`) REFERENCES `menu` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `menu_role_ibfk_2` FOREIGN KEY (`rid`) REFERENCES `role` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 291 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 316 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of menu_role
 -- ----------------------------
+INSERT INTO `menu_role` VALUES (130, 7, 13);
 INSERT INTO `menu_role` VALUES (168, 14, 6);
 INSERT INTO `menu_role` VALUES (177, 23, 6);
+INSERT INTO `menu_role` VALUES (215, 15, 1);
 INSERT INTO `menu_role` VALUES (263, 14, 1);
 INSERT INTO `menu_role` VALUES (272, 23, 1);
 INSERT INTO `menu_role` VALUES (290, 7, 6);
+INSERT INTO `menu_role` VALUES (315, 15, 6);
 
 -- ----------------------------
 -- Table structure for nation

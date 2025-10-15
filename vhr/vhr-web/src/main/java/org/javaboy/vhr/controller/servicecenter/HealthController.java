@@ -147,4 +147,36 @@ public class HealthController {
         return healthRecordService.updateHealthRecord(healthRecord);
     }
 
+    /**
+     * 获取健康数据明细，按指定维度聚合
+     * 
+     * @param dimension 维度类型：week(周)、month(月)、year(年)
+     * @param userId    用户ID（管理员可指定，非管理员只能查询自己）
+     * @return 聚合后的健康数据
+     */
+    @GetMapping("/dimension")
+    public RespBean getHealthDataByDimension(
+            @RequestParam(defaultValue = "week") String dimension,
+            @RequestParam(required = false) Integer userId) {
+        // 获取当前登录用户信息
+        Hr hr = (Hr) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        // 检查当前用户是否为管理员角色（role_id=6）
+        boolean isAdmin = false;
+        if (hr.getRoles() != null && !hr.getRoles().isEmpty()) {
+            isAdmin = hr.getRoles().stream()
+                    .anyMatch(role -> role != null && role.getId() != null && role.getId() == 6);
+        }
+
+        // 确定要查询的用户ID
+        Integer queryUserId = hr.getId();
+
+        // 管理员可以查询指定用户ID的数据，非管理员只能查询自己的数据
+        if (isAdmin && userId != null) {
+            queryUserId = userId;
+        }
+
+        return healthRecordService.getHealthDataByDimension(queryUserId, dimension);
+    }
+
 }
