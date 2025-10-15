@@ -38,14 +38,6 @@ public interface IHealthService extends IService<Health> {
     RespBean addHealthRecord(Health healthRecord);
 
     /**
-     * 生成AI健康报告
-     * 
-     * @param hrId 用户ID
-     * @return AI分析报告
-     */
-    RespBean generateAiReport(Integer hrId);
-
-    /**
      * 获取用户最新的健康记录
      * 
      * @param hrId 用户ID
@@ -64,7 +56,7 @@ public interface IHealthService extends IService<Health> {
     /**
      * 获取用户健康数据明细，按指定维度聚合
      * 
-     * @param hrId 用户ID
+     * @param hrId      用户ID
      * @param dimension 维度类型：week(周)、month(月)、year(年)
      * @return 聚合后的健康数据
      */

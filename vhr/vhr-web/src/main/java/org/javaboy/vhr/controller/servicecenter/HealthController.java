@@ -82,18 +82,6 @@ public class HealthController {
     }
 
     /**
-     * 生成AI健康报告
-     * 
-     * @return AI分析报告
-     */
-    @GetMapping("/ai-report")
-    public RespBean generateAiReport() {
-        // 获取当前用户ID
-        Hr hr = (Hr) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return healthRecordService.generateAiReport(hr.getId());
-    }
-
-    /**
      * 获取用户最新的健康记录
      * 
      * @return 最新的健康记录

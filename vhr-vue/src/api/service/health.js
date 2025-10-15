@@ -27,14 +27,6 @@ export function updateHealthRecord(data) {
   });
 }
 
-// 生成AI健康报告
-export function generateAiReport(userId) {
-  return request({
-    url: "/api/service-center/health/ai-report/" + userId,
-    method: "get",
-  });
-}
-
 // 获取用户最新健康记录
 export function getLatestHealthRecord(userId) {
   return request({

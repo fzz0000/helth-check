@@ -177,12 +177,12 @@ public class HealthServiceImpl extends ServiceImpl<HealthMapper, Health> impleme
 
         // 按指定维度聚合数据
         Map<String, List<Health>> aggregatedData = new HashMap<>();
-        
+
         for (Health record : healthRecords) {
             // 优先使用measureTime，如果measureTime为空则使用createDate
             LocalDateTime dateTime = record.getMeasureTime() != null ? record.getMeasureTime() : record.getCreateDate();
             String key;
-            
+
             switch (dimension) {
                 case "week":
                     // 按周分组：格式为 "年份-周数"
@@ -200,7 +200,7 @@ public class HealthServiceImpl extends ServiceImpl<HealthMapper, Health> impleme
                 default:
                     key = "unknown";
             }
-            
+
             aggregatedData.computeIfAbsent(key, k -> new ArrayList<>()).add(record);
         }
 
@@ -233,19 +233,19 @@ public class HealthServiceImpl extends ServiceImpl<HealthMapper, Health> impleme
                     .filter(r -> r.getSystolicPressure() != null)
                     .mapToInt(Health::getSystolicPressure)
                     .summaryStatistics();
-            systolicPressureData.add(systolicStats.getCount() > 0 ? (double)systolicStats.getAverage() : null);
+            systolicPressureData.add(systolicStats.getCount() > 0 ? (double) systolicStats.getAverage() : null);
 
             IntSummaryStatistics diastolicStats = records.stream()
                     .filter(r -> r.getDiastolicPressure() != null)
                     .mapToInt(Health::getDiastolicPressure)
                     .summaryStatistics();
-            diastolicPressureData.add(diastolicStats.getCount() > 0 ? (double)diastolicStats.getAverage() : null);
+            diastolicPressureData.add(diastolicStats.getCount() > 0 ? (double) diastolicStats.getAverage() : null);
 
             IntSummaryStatistics heartRateStats = records.stream()
                     .filter(r -> r.getHeartRate() != null)
                     .mapToInt(Health::getHeartRate)
                     .summaryStatistics();
-            heartRateData.add(heartRateStats.getCount() > 0 ? (double)heartRateStats.getAverage() : null);
+            heartRateData.add(heartRateStats.getCount() > 0 ? (double) heartRateStats.getAverage() : null);
 
             DoubleSummaryStatistics fastingGlucoseStats = records.stream()
                     .filter(r -> r.getFastingGlucose() != null)
@@ -284,54 +284,6 @@ public class HealthServiceImpl extends ServiceImpl<HealthMapper, Health> impleme
             healthRecord.setMeasureTime(LocalDateTime.now());
         }
         return save(healthRecord) ? RespBean.ok("健康信息上报成功") : RespBean.error("健康信息上报失败");
-    }
-
-    @Override
-    public RespBean generateAiReport(Integer hrId) {
-        // 查询用户的所有健康记录
-        QueryWrapper<Health> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("hr_id", hrId);
-        queryWrapper.orderByDesc("create_date");
-        List<Health> healthRecords = list(queryWrapper);
-
-        if (healthRecords == null || healthRecords.isEmpty()) {
-            return RespBean.error("没有找到健康记录，无法生成AI报告");
-        }
-
-        // 这里是模拟AI报告生成逻辑
-        // 实际项目中应该调用OpenAI API来生成真实的报告
-        StringBuilder reportBuilder = new StringBuilder();
-        reportBuilder.append("### 健康数据分析报告\n\n");
-        reportBuilder.append("根据您的健康数据记录，我们对您的健康状况进行了分析：\n\n");
-
-        // 获取最新的健康记录
-        Health latestRecord = healthRecords.get(0);
-        // 使用测量时间，如果没有则使用创建时间
-        LocalDateTime displayTime = latestRecord.getMeasureTime() != null ? latestRecord.getMeasureTime() : latestRecord.getCreateDate();
-        reportBuilder.append("#### 最新健康数据（").append(displayTime).append("）\n");
-        reportBuilder.append("- 血压：").append(latestRecord.getSystolicPressure()).append("/")
-                .append(latestRecord.getDiastolicPressure()).append(" mmHg\n");
-        reportBuilder.append("- 心率：").append(latestRecord.getHeartRate()).append(" 次/分钟\n");
-        reportBuilder.append("- 空腹血糖：").append(latestRecord.getFastingGlucose()).append(" mmol/L\n");
-        reportBuilder.append("- 体重：").append(latestRecord.getWeight()).append(" kg\n\n");
-
-        // 简单的健康建议
-        reportBuilder.append("#### 健康建议\n");
-        reportBuilder.append("1. 保持均衡饮食，多摄入蔬菜水果\n");
-        reportBuilder.append("2. 每周至少进行150分钟中等强度的有氧运动\n");
-        reportBuilder.append("3. 保证充足的睡眠，建议每晚7-8小时\n");
-        reportBuilder.append("4. 定期监测健康数据，如有异常及时就医\n");
-
-        if (latestRecord.getSystolicPressure() != null && latestRecord.getSystolicPressure() > 140) {
-            reportBuilder.append("5. 您的收缩压偏高，建议减少盐的摄入，并咨询医生意见\n");
-        }
-
-        if (latestRecord.getHeartRate() != null && latestRecord.getHeartRate() > 100) {
-            reportBuilder.append("5. 您的心率偏快，建议适当休息，避免过度劳累\n");
-        }
-
-        // 返回模拟的AI报告
-        return RespBean.ok("AI报告生成成功", reportBuilder.toString());
     }
 
     @Override
