@@ -11,7 +11,7 @@
  Target Server Version : 50736
  File Encoding         : 65001
 
- Date: 14/10/2025 16:28:47
+ Date: 15/10/2025 10:27:09
 */
 
 SET NAMES utf8mb4;
@@ -72,12 +72,30 @@ CREATE TABLE `health`  (
   INDEX `idx_hr_id`(`hr_id`) USING BTREE,
   INDEX `idx_create_date`(`create_date`) USING BTREE,
   CONSTRAINT `health_ibfk_1` FOREIGN KEY (`hr_id`) REFERENCES `hr` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '健康管理记录表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 22 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '健康管理记录表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of health
 -- ----------------------------
 INSERT INTO `health` VALUES (1, 5, 120, 80, 100, 30, 60, '首次测量', '2025-10-13 16:27:36');
+INSERT INTO `health` VALUES (4, 5, 1, 32, 34, 5, 243, 'handleAddHealthRecordhandleAddHealthRecordhandleAddHealthRecord', '2025-10-14 17:58:13');
+INSERT INTO `health` VALUES (5, 11, 23, 54, 54, 4, 56, '567565', '2025-10-14 17:58:39');
+INSERT INTO `health` VALUES (6, 3, 1, 2, 43, 54, 12, 'as', '2025-10-14 18:09:05');
+INSERT INTO `health` VALUES (7, 10, 1, 3, 4, 6, 7, 'Test-1111ss', '2025-10-14 18:10:21');
+INSERT INTO `health` VALUES (8, 5, 12, 34, 54, 6, 45, 'isAdminisAdminisAdminisAdmin000', '2025-10-14 19:07:51');
+INSERT INTO `health` VALUES (9, 5, 12, 43, 54, 5, 65, '65isAdminisAdminisAdminisAdmin', '2025-10-14 19:09:05');
+INSERT INTO `health` VALUES (10, 5, 1, 2, 34, 5, 4, '65565', '2025-10-14 19:09:46');
+INSERT INTO `health` VALUES (11, 5, 213, 4, 54, 65, 6, '7676', '2025-10-14 19:09:52');
+INSERT INTO `health` VALUES (12, 5, 23, 454, 6, 7, 677, '767', '2025-10-14 19:10:07');
+INSERT INTO `health` VALUES (13, 5, 12, 43, 34, 5, 454, '5454', '2025-10-14 19:10:42');
+INSERT INTO `health` VALUES (14, 5, 4, 45, 656, 5, 65, '65', '2025-10-14 19:10:47');
+INSERT INTO `health` VALUES (15, 5, 45, 565, 656, 65, 65, '65', '2025-10-14 19:10:54');
+INSERT INTO `health` VALUES (16, 5, 23, 34, 344, 45, 45, '4sss', '2025-10-14 19:11:25');
+INSERT INTO `health` VALUES (17, 5, 23, 34, 54, 54, 54, '53', '2025-10-14 19:13:01');
+INSERT INTO `health` VALUES (18, 11, 3, 32, 3, 4, 45, '4544s', '2025-10-14 19:18:54');
+INSERT INTO `health` VALUES (19, 13, 34, 45, 6, 56, 76, '7676', '2025-10-14 19:19:04');
+INSERT INTO `health` VALUES (20, 10, 343, 54, 45, 65, 6, '56767', '2025-10-14 19:19:11');
+INSERT INTO `health` VALUES (21, 3, 345, 545, 45, 4, 4, '454', '2025-10-14 19:19:18');
 
 -- ----------------------------
 -- Table structure for hr
@@ -162,7 +180,7 @@ INSERT INTO `menu` VALUES (5, '/', '/home', '/src/views/HomeView.vue', '预留�
 INSERT INTO `menu` VALUES (6, '/', '/home', '/src/views/HomeView.vue', '系统管理', 'fa fa-windows', NULL, 1, 1, 1);
 INSERT INTO `menu` VALUES (7, '/user/list/**', '/user/list', '/src/views/user/list.vue', '所有用户', NULL, NULL, 1, 2, 1);
 INSERT INTO `menu` VALUES (14, '/service/appointment/**', '/service/appointment', '/src/views/service/appointment.vue', '预约管理', NULL, NULL, 1, 4, 1);
-INSERT INTO `menu` VALUES (15, '/service/helth/**', '/service/helth', '/src/views/service/helth.vue', '健康管理', NULL, NULL, 1, 4, 1);
+INSERT INTO `menu` VALUES (15, '/service/health/**', '/service/health', '/src/views/service/health.vue', '健康管理', NULL, NULL, 1, 4, 1);
 INSERT INTO `menu` VALUES (23, '/system/notice/**', '/sys/notice', '/src/views/sys/notice.vue', '通知管理', NULL, NULL, 1, 6, 1);
 
 -- ----------------------------
